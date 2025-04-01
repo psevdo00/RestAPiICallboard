@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание объявления</title>
+</head>
+<body>
+<main>
+
+    <p style = "text-align: center">Добро пожаловать!</p>
+
+    <h2 style="text-align: center; margin-top: 50px;">Тест с созданием объявления с фотографией</h2>
+
+    <form style="text-align: center">
+
+        <input style="margin-top: 10px;" type="text" id="title" name="title" placeholder="Заголовок объявления"><br>
+        <textarea style="margin-top: 10px;" id="info" name="info" placeholder="Описание"></textarea><br>
+        <input style="margin-top: 10px;" type="file" id="photoInput" name="photoInput" placeholder="Фотография"><br>
+        <input style="margin-top: 10px;" type="text" id="cost" name="cost" placeholder="Цена"><br>
+        <input style="margin-top: 10px;" type="text" id="category" name="category" placeholder="Категория"><br>
+
+        <button style="margin-top: 10px;" type="button" onclick="createAdvt()">Создать объявление!</button><br>
+
+        <p>Предосмотр загруженного фото:</p><br><br>
+        <canvas id="previewPhoto" width="700" height="400"></canvas>
+
+    </form>
+
+</main>
+</body>
+<script src="./js/convertorJsonAdvt.js"></script>
+<script src="./js/previewPhoto.js"></script>
+</html>
