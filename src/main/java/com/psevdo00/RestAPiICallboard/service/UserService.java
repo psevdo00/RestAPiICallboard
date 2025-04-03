@@ -6,6 +6,7 @@ import com.psevdo00.RestAPiICallboard.exception.UserNotFoundException;
 import com.psevdo00.RestAPiICallboard.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Objects;
 
 @Service
@@ -48,7 +49,6 @@ public class UserService {
             throw new UserAlreadyExistsException("Данный пользователь не найден!");
 
         }
-
 
     }
 

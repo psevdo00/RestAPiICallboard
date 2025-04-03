@@ -5,6 +5,8 @@ import com.psevdo00.RestAPiICallboard.exception.UserAlreadyExistsException;
 import com.psevdo00.RestAPiICallboard.repository.AdvtRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdvtService {
 
@@ -39,6 +41,12 @@ public class AdvtService {
     public AdvtEntity findById(Long id){
 
         return repository.findById(id).orElseThrow(() -> new UserAlreadyExistsException("Данного объявления нет!"));
+
+    }
+
+    public List<AdvtEntity> getAllAdvt(){
+
+        return repository.findAll();
 
     }
 

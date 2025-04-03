@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class UserEntity {
@@ -38,8 +40,7 @@ public class UserEntity {
         this.advts = advts;
     }
 
-    public UserEntity() {
-    }
+    public UserEntity() {}
 
     public Long getId() {
         return id;
@@ -53,17 +54,11 @@ public class UserEntity {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public void setUsername(String username) { this.username = username; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) { this.email = email; }
 
     public String getPassword() {
         return password;
@@ -76,4 +71,5 @@ public class UserEntity {
     public String getRepeatPassword() { return repeatPassword; }
 
     public void setRepeatPassword(String repeatPassword) { this.repeatPassword = repeatPassword; }
+
 }

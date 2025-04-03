@@ -6,7 +6,7 @@ async function reg(){
     const password = document.getElementById("password").value;
     const repeatPassword = document.getElementById("repeatPassword").value;
 
-    const response = await fetch("api/users/reg", {
+    const response = await fetch("api/users/regUser", {
 
         method: 'POST',
         headers: {

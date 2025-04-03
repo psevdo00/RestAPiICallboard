@@ -8,6 +8,8 @@ import com.psevdo00.RestAPiICallboard.service.AdvtService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -39,7 +41,7 @@ public class AdvtController {
             service.createAdvt(advt);
             return ResponseEntity.ok().body(Map.of(
 
-                    "message", "Создание объявление прошло успешно! Переданное фото: " + advt.getPhoto(),
+                    "message", "Создание объявление прошло успешно!",
                     "newURL", ""
 
             ));
@@ -113,6 +115,40 @@ public class AdvtController {
         } catch (Exception e) {
 
             return ResponseEntity.badRequest().body(Map.of("message", "Ошибка поиска!"));
+
+        }
+
+    }
+
+    @GetMapping("/getAllAdvt")
+    public ResponseEntity getAllAdvt(){
+
+        try{
+
+            List<AdvtEntity> advts = service.getAllAdvt();
+            List<AdvtDTO> advtsDTO = new ArrayList<>();
+
+            for (int i = 0; i < advts.size(); i++){
+
+                AdvtDTO advtDTO = new AdvtDTO();
+
+                advtDTO.setId(advts.get(i).getId());
+                advtDTO.setTitle(advts.get(i).getTitle());
+                advtDTO.setInfo(advts.get(i).getInfo());
+                advtDTO.setPhotoBase64(advts.get(i).getPhoto());
+                advtDTO.setCost(advts.get(i).getCost());
+                advtDTO.setCompleted(advts.get(i).getCompleted());
+                advtDTO.setCategory(advts.get(i).getCategory());
+
+                advtsDTO.add(advtDTO);
+
+            }
+
+            return ResponseEntity.ok(Map.of("message", "Ответ получен!", "list", advtsDTO));
+
+        } catch (Exception e){
+
+            return ResponseEntity.badRequest().body(Map.of("message", "Ошибка на стороне сервера!"));
 
         }
 
