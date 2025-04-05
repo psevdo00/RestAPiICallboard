@@ -2,22 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Заглавная страница</title>
+    <title>Страница регистрации</title>
     <script src="./js/convertorJSON.js"></script>
+    <script src="./js/checkSession.js"></script>
 </head>
 <body>
-    <main>
+<main>
 
-        <div style = "text-align: center">
+    <header>
 
-            <input type="number" id = "id" placeholder="Введите id объявления"><br>
-            <button onclick="searchAdvt()">Поиск</button>
+        <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>
+        <button type="button" onclick="goAuth()">Авторизация</button>
 
-            <div id="result"></div>
+    </header>
 
-        </div>
+    <h1 style="text-align: center">Регистрация</h1>
+    <p style="text-align: center">Начальная страница будущего сайта</p>
+    <form style="text-align: center">
 
-    </main>
+        <input id = "username" type = "text" name = "username" placeholder="Имя пользователя"><br><br>
+        <input id = "email" type = "text" name = "email" placeholder="Email"><br><br>
+        <input id = "phone" type = "text" name = "phone" placeholder="Номер телефона"><br><br>
+        <input id = "password" type = "text" name = "password" placeholder="Пароль"><br><br>
+        <input id = "repeatPassword" type = "text" name = "repeatPassword" placeholder="Повторите пароль"><br><br>
+
+        <button type="button" onclick="reg()">Зарегистрироваться</button>
+
+    </form>
+
+    <div id = "errors_block">
+
+        <p style = "text-align: center; color: red" id = "errors"></p>
+
+    </div>
+
+</main>
 </body>
-<script src="./js/testSearchOneAdvt.js"></script>
 </html>

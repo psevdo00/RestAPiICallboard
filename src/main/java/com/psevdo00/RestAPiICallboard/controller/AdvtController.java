@@ -5,25 +5,30 @@ import com.psevdo00.RestAPiICallboard.dto.response.AdvtDTO;
 import com.psevdo00.RestAPiICallboard.entity.AdvtEntity;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
 import com.psevdo00.RestAPiICallboard.service.AdvtService;
+import com.psevdo00.RestAPiICallboard.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/advt")
 public class AdvtController {
 
     private final AdvtService service;
+    private final UserService userService;
 
-    public AdvtController(AdvtService service) {
+    public AdvtController(AdvtService service, UserService userService) {
         this.service = service;
+        this.userService = userService;
     }
 
     @PostMapping("/createAdvt")
-    public ResponseEntity createAdvt(@RequestBody CreateAdvtDTO advtDTO){
+    public ResponseEntity createAdvt(@RequestBody CreateAdvtDTO advtDTO, HttpSession session){
 
         try{
 
@@ -34,15 +39,16 @@ public class AdvtController {
             advt.setCost(advtDTO.getCost());
             advt.setCategory(advtDTO.getCategory());
 
-            UserEntity user = new UserEntity();
-            user.setId(1L);
+            Long id = (Long) session.getAttribute("id");
+
+            UserEntity user = userService.findById(id);
             advt.setUser(user);
 
             service.createAdvt(advt);
             return ResponseEntity.ok().body(Map.of(
 
                     "message", "Создание объявление прошло успешно!",
-                    "newURL", ""
+                    "newURL", "/mainPage.html"
 
             ));
 

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <script src="./js/checkSession.js"></script>
+    <script src="./js/convertorJSON.js"></script>
+</head>
+<body>
+<main>
+
+    <header>
+
+        <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>
+        <button type="button" onclick="goReg()">Регистрация</button>
+
+    </header>
+
+    <h1 style="text-align: center">Авторизация</h1>
+    <form style="text-align: center">
+
+        <input id = "username" type = "text" name = "username" placeholder="Имя пользователя"><br><br>
+        <input id = "password" type = "text" name = "password" placeholder="Пароль"><br><br>
+
+        <button type="button" onclick="auth()">Авторизоваться</button>
+
+    </form>
+
+    <div id = "errors_block">
+
+        <p style = "text-align: center; color: red" id = "errors"></p>
+
+    </div>
+
+</main>
+</body>
+</html>

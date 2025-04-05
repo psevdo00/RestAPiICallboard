@@ -1,4 +1,4 @@
-package com.psevdo00.RestAPiICallboard.validator;
+package com.psevdo00.RestAPiICallboard.dto.request;
 
 
 import jakarta.validation.constraints.Email;

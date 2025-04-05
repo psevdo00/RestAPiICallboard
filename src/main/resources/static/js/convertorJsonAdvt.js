@@ -30,7 +30,7 @@ async function createAdvt(){
     const result = await response.json(); // или response.json(), если ответ в формате JSON
     console.log(result); // Вывод ответа в консоль
 
-    /*switch (response.status){
+    switch (response.status){
 
         case 200: {
 
@@ -49,7 +49,7 @@ async function createAdvt(){
             break;
         default: alert("Ошибка с запросом на сервер!");
 
-    }*/
+    }
 
 }
 

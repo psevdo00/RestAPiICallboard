@@ -1,17 +1,16 @@
 package com.psevdo00.RestAPiICallboard.controller;
 
+import com.psevdo00.RestAPiICallboard.dto.request.AuthUserDTO;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
 import com.psevdo00.RestAPiICallboard.exception.UserAlreadyExistsException;
 import com.psevdo00.RestAPiICallboard.exception.UserNotFoundException;
 import com.psevdo00.RestAPiICallboard.service.UserService;
-import com.psevdo00.RestAPiICallboard.validator.CreateUserDTO;
+import com.psevdo00.RestAPiICallboard.dto.request.CreateUserDTO;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -27,7 +26,7 @@ public class UserController {
     }
     
     @PostMapping("/regUser")
-    public ResponseEntity registrationUsers(@Valid @RequestBody CreateUserDTO userValid){
+    public ResponseEntity registrationUsers(@Valid @RequestBody CreateUserDTO userValid, HttpSession session){
 
         try {
 
@@ -38,11 +37,15 @@ public class UserController {
             user.setPassword(userValid.getPassword());
             user.setRepeatPassword(userValid.getRepeatPassword());
 
+            service.registrationUser(user);
+
+            session.setAttribute("UserName", user.getUsername());
+            session.setAttribute("id", service.findIdByUsername(user.getUsername()));
+
             return ResponseEntity.ok().body(Map.of(
 
                     "message", "Регистрация прошла успешно!",
-                    "newURL", "/createAdvt.html",
-                    "newUser", service.registrationUser(user)
+                    "newURL", "/mainPage.html"
 
             ));
 
@@ -59,13 +62,21 @@ public class UserController {
     }
 
     @PostMapping("/authUser")
-    public ResponseEntity authorizationUsers(@RequestBody UserEntity user){
+    public ResponseEntity authorizationUsers(@RequestBody AuthUserDTO userDTO, HttpSession session){
 
         try {
 
-            if (service.authorizationUsers(user)){
+            if (service.authorizationUsers(userDTO)){
 
-                return ResponseEntity.ok("Успешная авторизация!");
+                session.setAttribute("UserName", userDTO.getUsername());
+                session.setAttribute("id", service.findIdByUsername(userDTO.getUsername()));
+
+                return ResponseEntity.ok(Map.of(
+
+                        "message", "Успешная авторизация!",
+                        "newURL", "mainPage.html")
+
+                );
 
             }
 

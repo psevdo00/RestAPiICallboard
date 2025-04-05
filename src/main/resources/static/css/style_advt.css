@@ -5,7 +5,7 @@
 }
 
 .container_img {
-
+    display: flex;
     width: 300px; /* Ширина квадрата */
     height: 300px; /* Высота квадрата */
     margin-bottom: auto;
@@ -14,7 +14,6 @@
     align-items: center;
     overflow: hidden;
     background-color: #f0f0f0;
-
 }
 
 .advt_cards{
@@ -30,6 +29,7 @@
     height: 490px;
     width: 300px;
     cursor: pointer;
+    border: 1px solid black;
 }
 
 .photo_img{
@@ -47,4 +47,5 @@
     line-height: 120%;
     margin-top: 5px;
     margin-bottom: 5px;
+    margin-left: 5px;
 }

@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <title>Доска объявлений</title>
     <script src="./js/create_advt_card.js"></script>
+    <script src="./js/checkSession.js"></script>
     <link rel = "stylesheet", href="css/style_advt.css">
 </head>
 <body>
 
     <header>
         <a href = "createAdvt.html">Создать объявление</a>
+        <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>
+        <button id = "logOut" type="button" onclick="logOut()">Выйти из аккаунта</button>
     </header>
     <main>
         <div class="advts">

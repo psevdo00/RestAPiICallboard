@@ -1,5 +1,6 @@
 package com.psevdo00.RestAPiICallboard.service;
 
+import com.psevdo00.RestAPiICallboard.dto.request.AuthUserDTO;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
 import com.psevdo00.RestAPiICallboard.exception.UserAlreadyExistsException;
 import com.psevdo00.RestAPiICallboard.exception.UserNotFoundException;
@@ -18,7 +19,7 @@ public class UserService {
         this.repository = repository;
     }
 
-    public UserEntity registrationUser(UserEntity user){
+    public void registrationUser(UserEntity user){
 
         if (repository.findByEmail(user.getEmail()) != null) {
 
@@ -34,15 +35,15 @@ public class UserService {
 
         }
 
-        return repository.save(user);
+        repository.save(user);
 
     }
 
-    public boolean authorizationUsers(UserEntity user){
+    public boolean authorizationUsers(AuthUserDTO userDTO){
 
-        if (repository.findByEmail(user.getEmail()) != null){
+        if (repository.findByUsername(userDTO.getUsername()) != null){
 
-            return user.getPassword().equals(repository.findPasswordByEmail(user.getEmail()));
+            return userDTO.getPassword().equals(repository.findPasswordByUsername(userDTO.getUsername()));
 
         } else {
 
@@ -63,6 +64,19 @@ public class UserService {
             return repository.findByEmail(email);
 
         }
+
+    }
+
+    public UserEntity findById(Long id){
+
+        return repository.findById(id).orElseThrow();
+
+    }
+
+    public Long findIdByUsername(String username){
+
+        UserEntity user = repository.findByUsername(username);
+        return user.getId();
 
     }
 
