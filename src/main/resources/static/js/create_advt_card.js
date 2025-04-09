@@ -11,9 +11,9 @@ async function fetchAdvtList() {
     });
 
     const result = await response.json();
-    const listAdvt = result.list;
+    const listAdvt = result.list; // список всех объявлений
 
-    console.log(listAdvt);
+    const currUser = await getCurrRoleUser(); // получение роли и id текущего пользователя
 
     const container = document.getElementById('container');
 
@@ -40,10 +40,38 @@ async function fetchAdvtList() {
         cost.textContent = listAdvt[i].cost;
         cost.classList.add('photo_title');
 
+        const id_p = document.createElement("p");
+        id_p.textContent = listAdvt[i].id;
+        id_p.id = "id_p";
+        id_p.style = "visibility: hidden; margin: 0;";
+
+        const closeButton = document.createElement("button");
+        closeButton.textContent = "×";
+        closeButton.id = "close_button";
+        closeButton.classList.add("close_button");
+
+        // const editButton = document.createElement("button");
+        // editButton.textContent = "×";
+        // editButton.id = "close_button";
+        // editButton.classList.add("close_button");
+
+        if (currUser.role != "ADMIN"){
+
+            if (currUser.id_user != listAdvt[i].user_id){
+
+                closeButton.style = "visibility: hidden;";
+                //editButton.style = "visibility: hidden;"
+
+            }
+
+        }
+
+        newDiv.appendChild(closeButton);
         divImg.appendChild(img);
         newDiv.appendChild(divImg);
         newDiv.appendChild(title);
         newDiv.appendChild(cost);
+        newDiv.appendChild(id_p);
 
         container.appendChild(newDiv);
 

@@ -9,6 +9,7 @@ public class AdvtDTO {
     private String cost;
     private Boolean completed;
     private String category;
+    private Long user_id;
 
     public Long getId() {
         return id;
@@ -64,5 +65,13 @@ public class AdvtDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
     }
 }

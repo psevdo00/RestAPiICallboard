@@ -1,6 +1,7 @@
 package com.psevdo00.RestAPiICallboard.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.psevdo00.RestAPiICallboard.enums.UserRoleEnum;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -27,6 +28,8 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<AdvtEntity> advts;
+
+    private UserRoleEnum role;
 
     public String getPhone() { return phone; }
 
@@ -72,4 +75,7 @@ public class UserEntity {
 
     public void setRepeatPassword(String repeatPassword) { this.repeatPassword = repeatPassword; }
 
+    public UserRoleEnum getRole() { return role; }
+
+    public void setRole(UserRoleEnum role) { this.role = role; }
 }

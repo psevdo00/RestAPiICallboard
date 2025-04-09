@@ -23,7 +23,17 @@ public class SessionController {
     @GetMapping("/api/getSession")
     public ResponseEntity getSession(HttpSession session){
 
-        return ResponseEntity.ok().body("Session. \nUsername: " + session.getAttribute("UserName") + ". \nId user: " + session.getAttribute("id"));
+        return ResponseEntity.ok().body("Session. \nUsername: " + session.getAttribute("UserName") + ". \nId user: " + session.getAttribute("id") + "\nUser role: " + session.getAttribute("role"));
+
+    }
+
+    @GetMapping("/api/getCurrRoleUser")
+    public ResponseEntity getCurrRoleUser(HttpSession session){
+
+        return ResponseEntity.ok(Map.of(
+                "role", session.getAttribute("role"),
+                "id_user", session.getAttribute("id")
+        ));
 
     }
 

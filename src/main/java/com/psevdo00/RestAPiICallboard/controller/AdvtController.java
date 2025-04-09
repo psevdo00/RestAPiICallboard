@@ -48,7 +48,7 @@ public class AdvtController {
             return ResponseEntity.ok().body(Map.of(
 
                     "message", "Создание объявление прошло успешно!",
-                    "newURL", "/mainPage.html"
+                    "newURL", "/index.html"
 
             ));
 
@@ -145,6 +145,7 @@ public class AdvtController {
                 advtDTO.setCost(advts.get(i).getCost());
                 advtDTO.setCompleted(advts.get(i).getCompleted());
                 advtDTO.setCategory(advts.get(i).getCategory());
+                advtDTO.setUser_id(advts.get(i).getIdUser());
 
                 advtsDTO.add(advtDTO);
 

@@ -8,6 +8,14 @@ async function checkSession(){
 
 }
 
+async function getCurrRoleUser() {
+
+    const response = await fetch("api/getCurrRoleUser");
+
+    return await response.json();
+
+}
+
 async function logOut(){
 
     const response = await fetch("api/deleteSession", {
@@ -39,3 +47,4 @@ async function logOut(){
     }
 
 }
+

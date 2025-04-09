@@ -17,4 +17,5 @@ public interface StudentRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("select password from UserEntity where username = :username")
     String findPasswordByUsername(@Param("username") String username);
+
 }

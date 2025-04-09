@@ -95,4 +95,8 @@ public class AdvtEntity {
     public void setUser(UserEntity user) {
         this.user = user;
     }
+
+    public Long getIdUser(){
+        return user.getId();
+    }
 }

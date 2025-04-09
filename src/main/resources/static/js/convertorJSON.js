@@ -88,7 +88,7 @@ async function auth(){
 
 function goReg(){
 
-    window.location.href = "index.html";
+    window.location.href = "regUser.html";
 
 }
 
