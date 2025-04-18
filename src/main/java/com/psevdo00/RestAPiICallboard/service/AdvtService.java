@@ -1,9 +1,10 @@
 package com.psevdo00.RestAPiICallboard.service;
 
 import com.psevdo00.RestAPiICallboard.entity.AdvtEntity;
-import com.psevdo00.RestAPiICallboard.exception.UserAlreadyExistsException;
 import com.psevdo00.RestAPiICallboard.repository.AdvtRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -40,7 +41,12 @@ public class AdvtService {
 
     public AdvtEntity findById(Long id){
 
-        return repository.findById(id).orElseThrow(() -> new UserAlreadyExistsException("Данного объявления нет!"));
+        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(
+
+                HttpStatus.NOT_FOUND,
+                "Данного объявления нет!"
+
+        ));
 
     }
 

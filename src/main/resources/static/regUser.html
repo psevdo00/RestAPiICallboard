@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Страница регистрации</title>
-    <script src="./js/convertorJSON.js"></script>
+    <script src="js/authAndRegUser.js"></script>
     <script src="./js/checkSession.js"></script>
 </head>
 <body>
@@ -20,11 +20,16 @@
     <p style="text-align: center">Начальная страница будущего сайта</p>
     <form style="text-align: center">
 
-        <input id = "username" type = "text" name = "username" placeholder="Имя пользователя"><br><br>
-        <input id = "email" type = "text" name = "email" placeholder="Email"><br><br>
-        <input id = "phone" type = "text" name = "phone" placeholder="Номер телефона"><br><br>
-        <input id = "password" type = "password" name = "password" placeholder="Пароль"><br><br>
-        <input id = "repeatPassword" type = "password" name = "repeatPassword" placeholder="Повторите пароль"><br><br>
+        <input id = "username" type = "text" name = "username" placeholder="Имя пользователя">
+        <p style = "margin: 0; text-align: center; color: red" id = "username_error"></p><br>
+        <input id = "email" type = "text" name = "email" placeholder="Email">
+        <p style = "margin: 0; text-align: center; color: red" id = "email_error"></p><br>
+        <input id = "phone" type = "text" name = "phone" placeholder="Номер телефона">
+        <p style = "margin: 0; text-align: center; color: red" id = "phone_error"></p><br>
+        <input id = "password" type = "password" name = "password" placeholder="Пароль">
+        <p style = "margin: 0; text-align: center; color: red" id = "password_error"></p><br>
+        <input id = "repeatPassword" type = "password" name = "repeatPassword" placeholder="Повторите пароль">
+        <p style = "margin: 0; text-align: center; color: red" id = "repeatPassword_error"></p><br><br>
 
         <button type="button" onclick="reg()">Зарегистрироваться</button>
 

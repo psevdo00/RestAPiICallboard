@@ -2,12 +2,11 @@ package com.psevdo00.RestAPiICallboard.service;
 
 import com.psevdo00.RestAPiICallboard.dto.request.AuthUserDTO;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
-import com.psevdo00.RestAPiICallboard.exception.UserAlreadyExistsException;
-import com.psevdo00.RestAPiICallboard.exception.UserNotFoundException;
 import com.psevdo00.RestAPiICallboard.repository.StudentRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
 import java.util.Objects;
 
 @Service
@@ -23,15 +22,30 @@ public class UserService {
 
         if (repository.findByEmail(user.getEmail()) != null) {
 
-            throw new UserAlreadyExistsException("Пользователь с такой почтой уже существует!");
+            throw new ResponseStatusException(
+
+                    HttpStatus.NOT_FOUND,
+                    "Пользователь с такой почтой уже существует!"
+
+            );
 
         } else if (repository.findByUsername(user.getUsername()) != null){
 
-            throw new UserAlreadyExistsException("Пользователь с таким именем уже существует!");
+            throw new ResponseStatusException(
+
+                    HttpStatus.NOT_FOUND,
+                    "Пользователь с таким именем уже существует!"
+
+            );
 
         } else if (!Objects.equals(user.getPassword(), user.getRepeatPassword())){
 
-            throw new UserAlreadyExistsException("Пароли не совпадают!");
+            throw new ResponseStatusException(
+
+                    HttpStatus.NOT_FOUND,
+                    "Пароли не совпадают!"
+
+            );
 
         }
 
@@ -47,7 +61,12 @@ public class UserService {
 
         } else {
 
-            throw new UserAlreadyExistsException("Данный пользователь не найден!");
+            throw new ResponseStatusException(
+
+                    HttpStatus.NOT_FOUND,
+                    "Данный пользователь не найден!"
+
+            );
 
         }
 
@@ -55,15 +74,20 @@ public class UserService {
 
     public UserEntity findByEmail(String email){
 
-        if (repository.findByEmail(email) == null){
+        UserEntity user = repository.findByEmail(email);
 
-            throw new UserNotFoundException("Пользователя с такой почтой нет.");
+        if (user == null){
 
-        } else {
+            throw new ResponseStatusException(
 
-            return repository.findByEmail(email);
+                    HttpStatus.NOT_FOUND,
+                    "Пользователя с данной почтой нет!"
+
+            );
 
         }
+
+            return user;
 
     }
 

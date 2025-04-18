@@ -21,52 +21,62 @@ async function fetchAdvtList() {
 
         const newDiv = document.createElement('div');
         newDiv.classList.add('advt_card');
+        newDiv.id = "advt_card";
 
         let mimeType = getImageMimeType(listAdvt[i].photoBase64);
         let src = `data:${mimeType};base64,${listAdvt[i].photoBase64}`;
 
         const divImg = document.createElement('div');
         divImg.classList.add('container_img');
+        divImg.id = "divImg";
 
         const img = document.createElement('img');
         img.src = src;
         img.classList.add('photo_img');
+        img.id = "img";
 
         const title = document.createElement("p");
         title.textContent = listAdvt[i].title;
         title.classList.add('photo_title');
+        title.id = "title";
 
         const cost = document.createElement("p");
         cost.textContent = listAdvt[i].cost;
         cost.classList.add('photo_title');
+        cost.id = "cost";
 
         const id_p = document.createElement("p");
         id_p.textContent = listAdvt[i].id;
         id_p.id = "id_p";
         id_p.style = "visibility: hidden; margin: 0;";
 
+        const buttonDiv = document.createElement("div");
+        buttonDiv.classList.add("div_button");
+
         const closeButton = document.createElement("button");
         closeButton.textContent = "×";
         closeButton.id = "close_button";
         closeButton.classList.add("close_button");
 
-        // const editButton = document.createElement("button");
-        // editButton.textContent = "×";
-        // editButton.id = "close_button";
-        // editButton.classList.add("close_button");
+        const editButton = document.createElement("button");
+        editButton.textContent = "✎";
+        editButton.id = "edit_button";
+        editButton.classList.add("edit_button");
 
         if (currUser.role != "ADMIN"){
 
             if (currUser.id_user != listAdvt[i].user_id){
 
                 closeButton.style = "visibility: hidden;";
-                //editButton.style = "visibility: hidden;"
+                editButton.style = "visibility: hidden;"
 
             }
 
         }
 
-        newDiv.appendChild(closeButton);
+        buttonDiv.appendChild(editButton);
+        buttonDiv.appendChild(closeButton);
+        newDiv.appendChild(buttonDiv);
         divImg.appendChild(img);
         newDiv.appendChild(divImg);
         newDiv.appendChild(title);

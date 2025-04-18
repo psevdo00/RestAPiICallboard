@@ -1,10 +1,7 @@
 package com.psevdo00.RestAPiICallboard.dto.request;
 
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public class CreateUserDTO {
 
@@ -24,7 +21,15 @@ public class CreateUserDTO {
     @Pattern(regexp = "^\\+\\d{11}$", message = "Некорректная форма записи номера телефона")
     private String phone;
 
+    @NotBlank(message = "Введите палоль повторно!")
     private String repeatPassword;
+
+    @AssertTrue(message = "Пароли не совпадают!")
+    public boolean isPasswordMatching(){
+
+        return password != null && password.equals(repeatPassword);
+
+    }
 
     public String getUsername() {
         return username;

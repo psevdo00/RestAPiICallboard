@@ -98,8 +98,8 @@ public class AdvtController {
 
     }
 
-    @GetMapping("/search")
-    public ResponseEntity findById(@RequestParam Long id){
+    @GetMapping("/search/{id}")
+    public ResponseEntity findById(@PathVariable Long id){
 
         try {
 

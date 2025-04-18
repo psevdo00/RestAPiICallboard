@@ -33,6 +33,18 @@ async function reg(){
         break;
         case 400: {
 
+            const usernameError = document.getElementById("username_error");
+            const emailError = document.getElementById("email_error");
+            const phoneError = document.getElementById("phone_error");
+            const passwordError = document.getElementById("password_error");
+            const repeatPasswordError = document.getElementById("repeatPassword_error");
+
+            usernameError.textContent = result.username;
+            emailError.textContent = result.email;
+            phoneError.textContent = result.phone;
+            passwordError.textContent = result.password;
+            repeatPasswordError.textContent = result.passwordMatching;
+
             const pError = document.getElementById("errors");
             pError.textContent = result.message;
 
@@ -60,7 +72,7 @@ async function auth(){
 
     });
 
-    const result = await response.json(); // или response.json(), если ответ в формате JSON
+    const result = await response.json();
     console.log(result); // Вывод ответа в консоль
 
     switch (response.status){

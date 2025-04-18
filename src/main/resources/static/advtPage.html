@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title id = "idTitlePage"></title>
+    <script src="js/checkSession.js"></script>
+    <script src="js/verificationUser.js"></script>
+    <script src="js/functionAdvt.js"></script>
+
+</head>
+<body>
+<header>
+    <a id = "createAdvt" href = "createAdvt.html">Создать объявление</a>
+    <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>
+    <button id = "logOut" type="button" onclick="logOut()">Выйти из аккаунта</button>
+    <button id = "singIn" type="button" onclick="goAuth()">Войти</button>
+    <button id = "singUp" type="button" onclick="goReg()">Зарегистрироваться</button>
+</header>
+<main>
+    <div id = "advt">
+
+    </div>
+</main>
+</body>
+<script src="js/openPageAdvt.js"></script>
+</html>
