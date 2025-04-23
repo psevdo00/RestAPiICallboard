@@ -1,4 +1,10 @@
-async function createAdvt(){
+const advtStringEntity = localStorage.getItem('currentAdvt');
+
+async function updateAdvt(){
+
+    const advt = JSON.parse(advtStringEntity);
+
+    localStorage.removeItem('currentAdvt');
 
     const title = document.getElementById("title").value;
     const info = document.getElementById("info").value;
@@ -16,9 +22,11 @@ async function createAdvt(){
 
     }
 
-    const response = await fetch("api/advt/createAdvt", {
+    const id = advt.id;
 
-        method: 'POST',
+    const response = await fetch(`/api/advt/editAdvt/${id}`, {
+
+        method: 'PUT',
         headers: {
 
             "Content-Type": "application/json"

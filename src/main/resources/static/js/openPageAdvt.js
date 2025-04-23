@@ -1,5 +1,7 @@
 const advtString = localStorage.getItem('currentAdvt');
+const userString = localStorage.getItem('userAdvt');
 const advt = JSON.parse(advtString);
+const user = JSON.parse(userString);
 
 localStorage.removeItem('currentAdvt');
 
@@ -13,14 +15,36 @@ h2Title.textContent = advt.title;
 let mimeType = getImageMimeType(advt.photoBase64);
 let src = `data:${mimeType};base64,${advt.photoBase64}`;
 
+const containerImgAndUser = document.createElement("div");
+containerImgAndUser.style = "display: flex;";
+
+const divContact = document.createElement("div");
+divContact.style = "margin-left: 20px"
+
+const pUsername = document.createElement("p");
+pUsername.textContent = "Продавец: " + user.username;
+
+const pEmail = document.createElement("p");
+pEmail.textContent = "Почта: " + user.email;
+
+const pPhone = document.createElement("p");
+pPhone.textContent = "Телефон: " + user.phone;
+
 const divImg = document.createElement('div');
-//divImg.classList.add('container_img');
+divImg.classList.add('img_advt');
+
+divContact.appendChild(pUsername);
+divContact.appendChild(pEmail);
+divContact.appendChild(pPhone)
 
 const img = document.createElement('img');
 img.src = src;
-//img.classList.add('photo_img');
+img.classList.add('img_advt_img');
 
 divImg.appendChild(img);
+
+containerImgAndUser.appendChild(divImg)
+containerImgAndUser.appendChild(divContact)
 
 const pInfoAdvt = document.createElement("p");
 pInfoAdvt.textContent = advt.info;
@@ -32,7 +56,7 @@ const pCategory = document.createElement("p");
 pCategory.textContent = advt.category;
 
 container.appendChild(h2Title);
-container.appendChild(divImg);
+container.appendChild(containerImgAndUser);
 container.appendChild(pCategory);
 container.appendChild(pCost);
 container.appendChild(pInfoAdvt);

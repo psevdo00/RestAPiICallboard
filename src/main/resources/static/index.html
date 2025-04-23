@@ -3,24 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Доска объявлений</title>
-    <script src="./js/checkSession.js"></script>
-    <script src="js/createFullListAdvt.js"></script>
-    <script src="js/authAndRegUser.js"></script>
-    <script src="./js/verificationUser.js"></script>
     <link rel = "stylesheet" href="css/style_advt.css">
 </head>
 <body>
-    <header>
-        <a id = "createAdvt" href = "createAdvt.html">Создать объявление</a>
-        <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>
-        <button id = "logOut" type="button" onclick="logOut()">Выйти из аккаунта</button>
-        <button id = "singIn" type="button" onclick="goAuth()">Войти</button>
-        <button id = "singUp" type="button" onclick="goReg()">Зарегистрироваться</button>
+    <header style = "display: flex;">
+        <div id="auth_user" style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
+            <button id="createAdvt" onclick="goToCreateAdvt()">Создать объявление</button>
+            <button id="logOut" type="button" onclick="logOut()">Выйти из аккаунта</button>
+            <p id="username_p"></p>
+        </div>
+
+        <div id = "no_auth_user" style = "display: flex">
+            <button id = "singIn" type="button" onclick="goAuth()">Войти</button>
+            <button id = "singUp" type="button" onclick="goReg()">Зарегистрироваться</button>
+        </div>
+
+<!--        <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>-->
+
+        <div class = "search_div">
+
+            <input id = "searchInput" type = "text" placeholder="Поиск" style = "width: 250px">
+            <button id = "searchButton" type="button" onclick="">Найти!</button>
+
+        </div>
+
     </header>
     <main>
         <div class="advts">
+            <div id = "filterAdvt">
+                <p>Фильтр по категориям:</p>
+                <select id = "list_category">
+                    <option value="" selected>Выбрать все</option>
+                </select>
+            </div>
             <h1 class="advt_title">Объявления:</h1>
             <div class="advt">
+                <p id = "p_not_result_in_search">Ничего не найдено!</p>
                 <div id="container" class="advt_cards"></div>
             </div>
         </div>
@@ -28,7 +46,11 @@
     <footer>
 
     </footer>
+    <script src="js/checkSession.js"></script>
+    <script src="js/createFullListAdvt.js"></script>
+    <script src="js/authAndRegUser.js"></script>
+    <script src="js/verificationUser.js"></script>
+    <script src="js/createListCategory.js"></script>
     <script src="js/functionAdvt.js"></script>
 </body>
-
 </html>

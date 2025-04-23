@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title id = "idTitlePage"></title>
-    <script src="js/checkSession.js"></script>
-    <script src="js/verificationUser.js"></script>
-    <script src="js/functionAdvt.js"></script>
-
+    <link rel = "stylesheet" href="css/style_advt.css">
 </head>
 <body>
 <header>
-    <a id = "createAdvt" href = "createAdvt.html">Создать объявление</a>
-    <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>
-    <button id = "logOut" type="button" onclick="logOut()">Выйти из аккаунта</button>
-    <button id = "singIn" type="button" onclick="goAuth()">Войти</button>
-    <button id = "singUp" type="button" onclick="goReg()">Зарегистрироваться</button>
+    <div id="auth_user" style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
+        <button id="createAdvt" onclick="goToCreateAdvt()">Создать объявление</button>
+        <button id="logOut" type="button" onclick="logOut()">Выйти из аккаунта</button>
+        <p id="username_p"></p>
+    </div>
+
+    <div id = "no_auth_user" style = "display: flex">
+        <button id = "singIn" type="button" onclick="goAuth()">Войти</button>
+        <button id = "singUp" type="button" onclick="goReg()">Зарегистрироваться</button>
+    </div>
+
+    <!--        <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>-->
 </header>
 <main>
     <div id = "advt">
@@ -23,4 +27,7 @@
 </main>
 </body>
 <script src="js/openPageAdvt.js"></script>
+<script src="js/checkSession.js"></script>
+<script src="js/verificationUser.js"></script>
+<!--<script src="js/functionAdvt.js"></script>-->
 </html>

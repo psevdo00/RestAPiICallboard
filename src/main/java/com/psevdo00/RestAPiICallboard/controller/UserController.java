@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -19,9 +18,9 @@ public class UserController {
 
     private final UserService service;
 
-    public UserController (UserService servise){
+    public UserController (UserService service){
         
-        this.service = servise;
+        this.service = service;
         
     }
     
@@ -86,7 +85,22 @@ public class UserController {
 
         } catch (Exception e) {
 
-            return ResponseEntity.badRequest().body("Произошла ошибка во время поиска!");
+            return ResponseEntity.badRequest().body(Map.of("message", "Произошла ошибка во время поиска!"));
+
+        }
+
+    }
+
+    @GetMapping("/searchById/{id}")
+    public ResponseEntity findById(Long id){
+
+        try {
+
+            return ResponseEntity.ok(service.findById(id));
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest().body(Map.of("message", "Произошла ошибка во время поиска!"));
 
         }
 

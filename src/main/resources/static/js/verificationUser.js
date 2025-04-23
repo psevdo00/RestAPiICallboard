@@ -4,24 +4,20 @@ async function AuthVerification(){
 
     const result = await getCurrRoleUser();
 
-    const buttonCreateAdvt = document.getElementById("createAdvt");
-    const buttonLogOut = document.getElementById("logOut");
-    const buttonSingIn = document.getElementById("singIn");
-    const buttonSingUp = document.getElementById("singUp");
+    const auth_user = document.getElementById("auth_user");
+    const no_auth_user = document.getElementById("no_auth_user");
+    const p_username = document.getElementById("username_p");
 
-    if (result.role != "ADMIN" && result.role != "USER"){
+    if (result.role !== "ADMIN" && result.role !== "USER"){
 
-        buttonCreateAdvt.style = "display: none;";
-        buttonLogOut.style = "display: none;";
-        buttonSingIn.style = "display: inline-block;";
-        buttonSingUp.style = "display: inline-block;";
+        auth_user.style = "display: none;";
+        no_auth_user.style = "display: inline-block;";
 
     } else {
 
-        buttonCreateAdvt.style = "display: inline-block;";
-        buttonLogOut.style = "display: inline-block;";
-        buttonSingIn.style = "display: none;";
-        buttonSingUp.style = "display: none;";
+        auth_user.style = "display: inline-block;";
+        no_auth_user.style = "display: none;";
+        p_username.textContent = "Пользователь: " + result.username;
 
     }
 

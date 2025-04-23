@@ -29,8 +29,26 @@ document.getElementById("photoInput").addEventListener("change", function(event)
         img.onload = function(){
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
+            // Рассчитываем новые размеры с сохранением пропорций
+            const canvasRatio = canvas.width / canvas.height;
+            const imgRatio = img.width / img.height;
+
+            let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
+
+            if (imgRatio > canvasRatio) {
+                // Ширина изображения ограничивает
+                drawWidth = canvas.width;
+                drawHeight = canvas.width / imgRatio;
+                offsetY = (canvas.height - drawHeight) / 2;
+            } else {
+                // Высота изображения ограничивает
+                drawHeight = canvas.height;
+                drawWidth = canvas.height * imgRatio;
+                offsetX = (canvas.width - drawWidth) / 2;
+            }
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
         }
         img.src = URLPhoto;
 
@@ -39,3 +57,4 @@ document.getElementById("photoInput").addEventListener("change", function(event)
     reader.readAsDataURL(filePhoto);
 
 })
+

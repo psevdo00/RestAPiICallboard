@@ -19,7 +19,11 @@ public class AdvtEntity {
     private byte[] photo;
     private String cost;
     private Boolean completed = false;
-    private String category;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonBackReference
+    private CategoryEntity category;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -51,6 +55,7 @@ public class AdvtEntity {
     }
 
     public String getPhoto() {
+
         if (this.photo != null){
 
             return Base64.getEncoder().encodeToString(this.photo);
@@ -58,6 +63,7 @@ public class AdvtEntity {
         }
 
         return null;
+
     }
 
     public void setPhoto(byte[] photo) {
@@ -80,13 +86,9 @@ public class AdvtEntity {
         this.completed = completed;
     }
 
-    public String getCategory() {
-        return category;
-    }
+    public CategoryEntity getCategory() { return category; }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    public void setCategory(CategoryEntity category) { this.category = category; }
 
     public UserEntity getUser() {
         return user;

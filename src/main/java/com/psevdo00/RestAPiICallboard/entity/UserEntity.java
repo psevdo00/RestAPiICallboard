@@ -3,11 +3,7 @@ package com.psevdo00.RestAPiICallboard.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.psevdo00.RestAPiICallboard.enums.UserRoleEnum;
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
-
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class UserEntity {

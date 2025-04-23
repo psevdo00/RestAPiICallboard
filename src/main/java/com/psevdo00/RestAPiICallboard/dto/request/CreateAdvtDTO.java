@@ -8,7 +8,7 @@ public class CreateAdvtDTO {
     private String info;
     private String photoBase64;
     private String cost;
-    private String category;
+    private Long categoryId;
 
     public String getTitle() {
         return title;
@@ -53,11 +53,11 @@ public class CreateAdvtDTO {
         this.cost = cost;
     }
 
-    public String getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

@@ -17,9 +17,9 @@ public class AdvtService {
         this.repository = repository;
     }
 
-    public AdvtEntity createAdvt(AdvtEntity advt){
+    public void createAdvt(AdvtEntity advt){
 
-        return repository.save(advt);
+        repository.save(advt);
 
     }
 
@@ -50,10 +50,27 @@ public class AdvtService {
 
     }
 
+    public List<AdvtEntity> findAllByTitle(String title){
+
+        return repository.findByTitle(title);
+
+    }
+
     public List<AdvtEntity> getAllAdvt(){
 
         return repository.findAll();
 
     }
 
+    public List<AdvtEntity> searchAllAdvtByCategory(Long id) {
+
+        return repository.findByCategory(id);
+
+    }
+
+    public void editAdvt(AdvtEntity advt){
+
+        repository.save(advt);
+
+    }
 }

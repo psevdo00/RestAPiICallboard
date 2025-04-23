@@ -2,7 +2,7 @@ package com.psevdo00.RestAPiICallboard.service;
 
 import com.psevdo00.RestAPiICallboard.dto.request.AuthUserDTO;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
-import com.psevdo00.RestAPiICallboard.repository.StudentRepository;
+import com.psevdo00.RestAPiICallboard.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,9 +12,9 @@ import java.util.Objects;
 @Service
 public class UserService {
 
-    private final StudentRepository repository;
+    private final UserRepository repository;
 
-    public UserService(StudentRepository repository) {
+    public UserService(UserRepository repository) {
         this.repository = repository;
     }
 
