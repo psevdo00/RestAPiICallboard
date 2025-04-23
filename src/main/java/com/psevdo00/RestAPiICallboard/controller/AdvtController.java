@@ -105,7 +105,7 @@ public class AdvtController {
 
         } catch (Exception e) {
 
-            return ResponseEntity.badRequest().body("Ошибка обновления статуса объявления! " + e);
+            return ResponseEntity.badRequest().body(Map.of("message", "Ошибка обновления статуса объявления! " + e));
 
         }
 
@@ -217,7 +217,7 @@ public class AdvtController {
 
             if (advt == null){
 
-                return ResponseEntity.badRequest().body(Map.of("message", ""));
+                return ResponseEntity.badRequest().body(Map.of("message", "Данное объявление не найдено!"));
 
             }
 

@@ -32,10 +32,8 @@ public class SessionController {
 
         if (session == null || session.getAttribute("role") == null) {
 
-            return ResponseEntity.ok(Map.of("role", "not_role", "id_user", "-1")); // или другой дефолтной роли
-
+            return ResponseEntity.ok(Map.of("role", "not_role", "id_user", "-1"));
         }
-
 
         return ResponseEntity.ok(Map.of(
                 "role", session.getAttribute("role"),

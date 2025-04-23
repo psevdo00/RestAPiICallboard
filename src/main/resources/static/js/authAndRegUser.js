@@ -18,8 +18,7 @@ async function reg(){
 
     });
 
-    const result = await response.json(); // или response.json(), если ответ в формате JSON
-    console.log(result); // Вывод ответа в консоль
+    const result = await response.json(); // преобразование ответа в JSON
 
     switch (response.status){
 
@@ -73,7 +72,6 @@ async function auth(){
     });
 
     const result = await response.json();
-    console.log(result); // Вывод ответа в консоль
 
     switch (response.status){
 

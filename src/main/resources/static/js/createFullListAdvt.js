@@ -120,12 +120,16 @@ async function fetchAdvtList(result) {
         let mimeType = getImageMimeType(listAdvt[i].photoBase64);
         let src = `data:${mimeType};base64,${listAdvt[i].photoBase64}`;
 
+        const pCategory = document.createElement("p");
+        pCategory.textContent = "Категория товара: " + listAdvt[i].category;
+        pCategory.style = "margin-left: 5px"
+
         const divImg = document.createElement('div');
-        divImg.id = "divImg";
+        divImg.classList.add('container_img');
 
         const img = document.createElement('img');
         img.src = src;
-        img.id = "img";
+        img.classList.add('photo_img');
 
         const title = document.createElement("p");
         title.textContent = listAdvt[i].title;
@@ -183,6 +187,7 @@ async function fetchAdvtList(result) {
         newDiv.appendChild(buttonDiv);
         divImg.appendChild(img);
         newDiv.appendChild(divImg);
+        newDiv.appendChild(pCategory);
         newDiv.appendChild(title);
         newDiv.appendChild(cost);
         newDiv.appendChild(id_p);

@@ -16,17 +16,6 @@ function loadAdvertisementData() {
         document.getElementById("info").value = advt.info || '';
         document.getElementById("cost").value = advt.cost || '';
 
-        // Устанавливаем категорию
-        const categorySelect = document.getElementById("list_category");
-        if (categorySelect) {
-            for (const option of categorySelect.options) {
-                if (option.textContent.trim() === advt.category) {
-                    option.selected = true;
-                    break;
-                }
-            }
-        }
-
         // Загружаем изображение, если оно есть
         if (advt.photoBase64 && canvas) {
             loadImageToCanvas(advt.photoBase64);

@@ -12,13 +12,12 @@ async function updateAdvt(){
     const categoryId = document.getElementById("list_category").value;
     const photoInput = document.getElementById("photoInput");
 
-    const filePhotoValue = photoInput.files[0];
+    let photoBase64 = advt.photoBase64; // По умолчанию используем старое фото
 
-    let photoBase64 = null;
+    // Если выбран новый файл, конвертируем его
+    if (photoInput.files[0]) {
 
-    if (filePhotoValue) {
-
-        photoBase64 = await convertFileToBase64(filePhotoValue);
+        photoBase64 = await convertFileToBase64(photoInput.files[0]);
 
     }
 
@@ -36,8 +35,7 @@ async function updateAdvt(){
 
     });
 
-    const result = await response.json(); // или response.json(), если ответ в формате JSON
-    console.log(result); // Вывод ответа в консоль
+    const result = await response.json();
 
     switch (response.status){
 
@@ -66,7 +64,7 @@ function convertFileToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result.split(',')[1]); // Удаляем префикс data:image/...
+        reader.onload = () => resolve(reader.result.split(',')[1]);
         reader.onerror = error => reject(error);
     });
 }

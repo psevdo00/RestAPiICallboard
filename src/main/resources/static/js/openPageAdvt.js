@@ -53,7 +53,7 @@ const pCost = document.createElement("p");
 pCost.textContent = advt.cost;
 
 const pCategory = document.createElement("p");
-pCategory.textContent = advt.category;
+pCategory.textContent = "Категория товара: " + advt.category;
 
 container.appendChild(h2Title);
 container.appendChild(containerImgAndUser);
