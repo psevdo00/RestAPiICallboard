@@ -1,8 +1,12 @@
 package com.psevdo00.RestAPiICallboard.service;
 
 import com.psevdo00.RestAPiICallboard.dto.request.AuthUserDTO;
+import com.psevdo00.RestAPiICallboard.dto.request.CreateUserDTO;
+import com.psevdo00.RestAPiICallboard.dto.response.UserSessionDTO;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
+import com.psevdo00.RestAPiICallboard.enums.UserRoleEnum;
 import com.psevdo00.RestAPiICallboard.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,13 +22,22 @@ public class UserService {
         this.repository = repository;
     }
 
-    public void registrationUser(UserEntity user){
+    public UserSessionDTO registrationUser(CreateUserDTO userValid){
+
+        UserEntity user = new UserEntity();
+
+        user.setUsername(userValid.getUsername());
+        user.setEmail(userValid.getEmail());
+        user.setPhone(userValid.getPhone());
+        user.setPassword(userValid.getPassword());
+        user.setRepeatPassword(userValid.getRepeatPassword());
+        user.setRole(UserRoleEnum.USER);
 
         if (repository.findByEmail(user.getEmail()) != null) {
 
             throw new ResponseStatusException(
 
-                    HttpStatus.NOT_FOUND,
+                    HttpStatus.BAD_REQUEST,
                     "Пользователь с такой почтой уже существует!"
 
             );
@@ -33,7 +46,7 @@ public class UserService {
 
             throw new ResponseStatusException(
 
-                    HttpStatus.NOT_FOUND,
+                    HttpStatus.BAD_REQUEST,
                     "Пользователь с таким именем уже существует!"
 
             );
@@ -42,7 +55,7 @@ public class UserService {
 
             throw new ResponseStatusException(
 
-                    HttpStatus.NOT_FOUND,
+                    HttpStatus.BAD_REQUEST,
                     "Пароли не совпадают!"
 
             );
@@ -51,13 +64,30 @@ public class UserService {
 
         repository.save(user);
 
+        return repository.valuesForUserSessionDTO(user.getUsername());
+
     }
 
-    public boolean authorizationUsers(AuthUserDTO userDTO){
+    public UserSessionDTO authorizationUsers(AuthUserDTO userDTO){
 
-        if (repository.findByUsername(userDTO.getUsername()) != null){
+        UserEntity user = repository.findByUsername(userDTO.getUsername());
 
-            return userDTO.getPassword().equals(repository.findPasswordByUsername(userDTO.getUsername()));
+        if (user != null){
+
+            if (userDTO.getPassword().equals(user.getPassword())){
+
+                return repository.valuesForUserSessionDTO(user.getUsername());
+
+            } else {
+
+                throw new ResponseStatusException(
+
+                        HttpStatus.BAD_REQUEST,
+                        "Имя пользователя или пароль не верный!"
+
+                );
+
+            }
 
         } else {
 

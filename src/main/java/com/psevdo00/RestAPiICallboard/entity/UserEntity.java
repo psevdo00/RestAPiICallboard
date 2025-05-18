@@ -27,9 +27,13 @@ public class UserEntity {
 
     private UserRoleEnum role;
 
-    public String getPhone() { return phone; }
+    public String getPhone() {
+        return phone;
+    }
 
-    public void setPhone(String phone) { this.phone = phone; }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public List<AdvtEntity> getAdvts() {
         return advts;
@@ -53,11 +57,17 @@ public class UserEntity {
         return username;
     }
 
-    public void setUsername(String username) { this.username = username; }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getPassword() {
         return password;
@@ -67,11 +77,19 @@ public class UserEntity {
         this.password = password;
     }
 
-    public String getRepeatPassword() { return repeatPassword; }
+    public String getRepeatPassword() {
+        return repeatPassword;
+    }
 
-    public void setRepeatPassword(String repeatPassword) { this.repeatPassword = repeatPassword; }
+    public void setRepeatPassword(String repeatPassword) {
+        this.repeatPassword = repeatPassword;
+    }
 
-    public UserRoleEnum getRole() { return role; }
+    public UserRoleEnum getRole() {
+        return role;
+    }
 
-    public void setRole(UserRoleEnum role) { this.role = role; }
+    public void setRole(UserRoleEnum role) {
+        this.role = role;
+    }
 }

@@ -1,6 +1,7 @@
 package com.psevdo00.RestAPiICallboard.controller;
 
 import com.psevdo00.RestAPiICallboard.dto.request.AuthUserDTO;
+import com.psevdo00.RestAPiICallboard.dto.response.UserSessionDTO;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
 import com.psevdo00.RestAPiICallboard.enums.UserRoleEnum;
 import com.psevdo00.RestAPiICallboard.service.UserService;
@@ -27,21 +28,11 @@ public class UserController {
     @PostMapping("/regUser")
     public ResponseEntity registrationUsers(@Valid @RequestBody CreateUserDTO userValid, HttpSession session){
 
-        UserEntity userSaved = new UserEntity();
-        userSaved.setUsername(userValid.getUsername());
-        userSaved.setEmail(userValid.getEmail());
-        userSaved.setPhone(userValid.getPhone());
-        userSaved.setPassword(userValid.getPassword());
-        userSaved.setRepeatPassword(userValid.getRepeatPassword());
-        userSaved.setRole(UserRoleEnum.USER);
+        UserSessionDTO userSessionDTO = service.registrationUser(userValid);
 
-        service.registrationUser(userSaved);
-
-        UserEntity user = service.findByUsername(userSaved.getUsername());
-
-        session.setAttribute("UserName", user.getUsername());
-        session.setAttribute("id", user.getId());
-        session.setAttribute("role", user.getRole().name());
+        session.setAttribute("UserName", userSessionDTO.getUsername());
+        session.setAttribute("id", userSessionDTO.getId());
+        session.setAttribute("role", userSessionDTO.getRole().name());
 
         return ResponseEntity.ok().body(Map.of(
 
@@ -55,24 +46,18 @@ public class UserController {
     @PostMapping("/authUser")
     public ResponseEntity authorizationUsers(@RequestBody AuthUserDTO userDTO, HttpSession session){
 
-        if (service.authorizationUsers(userDTO)){
+        UserSessionDTO userSessionDTO = service.authorizationUsers(userDTO);
 
-            UserEntity user = service.findByUsername(userDTO.getUsername());
+        session.setAttribute("UserName", userSessionDTO.getUsername());
+        session.setAttribute("id", userSessionDTO.getId());
+        session.setAttribute("role", userSessionDTO.getRole().name());
 
-            session.setAttribute("UserName", userDTO.getUsername());
-            session.setAttribute("id", user.getId());
-            session.setAttribute("role", user.getRole().name());
+        return ResponseEntity.ok(Map.of(
 
-            return ResponseEntity.ok(Map.of(
+                "message", "Успешная авторизация!",
+                "newURL", "index.html")
 
-                    "message", "Успешная авторизация!",
-                    "newURL", "index.html")
-
-            );
-
-        }
-
-        return ResponseEntity.badRequest().body(Map.of("message", "Неправильное имя или пароль!"));
+        );
 
     }
 
@@ -116,31 +101,6 @@ public class UserController {
         } catch (Exception e) {
 
             return ResponseEntity.badRequest().body("Произошла ошибка с удалением пользователя!" + e);
-
-        }
-
-    }
-
-    @GetMapping("/createAdminAcount")
-    public ResponseEntity createAdmin(){
-
-        try {
-
-            UserEntity user = new UserEntity();
-            user.setUsername("admin");
-            user.setEmail("admin@mail.ru");
-            user.setPhone("+79780000000");
-            user.setPassword("adminAdmin");
-            user.setRepeatPassword("adminAdmin");
-            user.setRole(UserRoleEnum.ADMIN);
-
-            service.registrationUser(user);
-
-            return ResponseEntity.ok().body("Регистрация прошла успешно!");
-
-        } catch (Exception e) {
-
-            return ResponseEntity.badRequest().body("Ошибка регистрации! " + e);
 
         }
 

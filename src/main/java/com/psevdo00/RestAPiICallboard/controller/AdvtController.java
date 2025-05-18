@@ -22,35 +22,16 @@ import java.util.Objects;
 public class AdvtController {
 
     private final AdvtService service;
-    private final UserService userService;
-    private final CategoryService categoryService;
 
-    public AdvtController(AdvtService service, UserService userService, CategoryService categoryService) {
-        this.service = service;
-        this.userService = userService;
-        this.categoryService = categoryService;
-    }
+    public AdvtController(AdvtService service) { this.service = service; }
 
     @PostMapping("/createAdvt")
     public ResponseEntity createAdvt(@RequestBody CreateAdvtDTO advtDTO, HttpSession session){
 
         try{
 
-            AdvtEntity advt = new AdvtEntity();
-            advt.setTitle(advtDTO.getTitle());
-            advt.setInfo(advtDTO.getInfo());
-            advt.setPhoto(advtDTO.getPhotoBase64());
-            advt.setCost(advtDTO.getCost());
+            service.createAdvt(advtDTO, session);
 
-            CategoryEntity category = categoryService.findById(advtDTO.getCategoryId());
-            advt.setCategory(category);
-
-            Long id = (Long) session.getAttribute("id");
-
-            UserEntity user = userService.findById(id);
-            advt.setUser(user);
-
-            service.createAdvt(advt);
             return ResponseEntity.ok().body(Map.of(
 
                     "message", "Создание объявление прошло успешно!",
@@ -111,41 +92,12 @@ public class AdvtController {
 
     }
 
-    @GetMapping("/search/{id}")
-    public ResponseEntity findById(@PathVariable Long id){
-
-        try {
-
-            AdvtEntity advt = service.findById(id);
-
-            UserEntity user = userService.findById(advt.getUser().getId());
-            
-            List<AdvtEntity> advts = new ArrayList<>();
-            advts.add(advt);
-            
-            List<AdvtDTO> advtsDTO = advtEntityToAdvtDTO(advts);
-            AdvtDTO advtDTO = advtsDTO.get(0);
-
-            return ResponseEntity.ok(Map.of(
-                    "entity", advtDTO,
-                    "user", user,
-                    "message", "Объявление найдено!"));
-
-        } catch (Exception e) {
-
-            return ResponseEntity.badRequest().body(Map.of("message", "Ошибка поиска!"));
-
-        }
-
-    }
-
     @GetMapping("/searchAllAdvtByTitle/{title}")
     public ResponseEntity searchAllAdvtByTitle(@PathVariable String title){
 
         try {
 
-            List<AdvtEntity> advts = service.findAllByTitle(title);
-            List<AdvtDTO> advtsDTO = advtEntityToAdvtDTO(advts);
+            List<AdvtDTO> advtsDTO = service.searchAllAdvtByTitle(title);
 
             return ResponseEntity.ok(Map.of(
 
@@ -167,8 +119,7 @@ public class AdvtController {
 
         try{
 
-            List<AdvtEntity> advts = service.getAllAdvt();
-            List<AdvtDTO> advtsDTO = advtEntityToAdvtDTO(advts);
+            List<AdvtDTO> advtsDTO = service.getAllAdvt();
 
             return ResponseEntity.ok(Map.of(
 
@@ -190,8 +141,7 @@ public class AdvtController {
 
         try{
 
-            List<AdvtEntity> advts = service.searchAllAdvtByCategory(id);
-            List<AdvtDTO> advtsDTO = advtEntityToAdvtDTO(advts);
+            List<AdvtDTO> advtsDTO = service.searchAllAdvtByCategory(id);
 
             return ResponseEntity.ok(Map.of(
 
@@ -213,23 +163,7 @@ public class AdvtController {
 
         try {
 
-            AdvtEntity advt = service.findById(id);
-
-            if (advt == null){
-
-                return ResponseEntity.badRequest().body(Map.of("message", "Данное объявление не найдено!"));
-
-            }
-
-            advt.setTitle(advtDTO.getTitle());
-            advt.setInfo(advtDTO.getInfo());
-            advt.setPhoto(advtDTO.getPhotoBase64());
-            advt.setCost(advtDTO.getCost());
-
-            CategoryEntity category = categoryService.findById(advtDTO.getCategoryId());
-            advt.setCategory(category);
-
-            service.editAdvt(advt);
+            service.editAdvt(advtDTO, session, id);
 
             return ResponseEntity.ok(Map.of(
                     "message", "Изменения успешно сохранены!",
@@ -241,31 +175,6 @@ public class AdvtController {
             return ResponseEntity.badRequest().body(Map.of("message", "Ошибка в сохранении объявлении"));
 
         }
-
-    }
-
-    public List<AdvtDTO> advtEntityToAdvtDTO(List<AdvtEntity> advts){
-
-        List<AdvtDTO> advtsDTO = new ArrayList<>();
-
-        for (int i = 0; i < advts.size(); i++){
-
-            AdvtDTO advtDTO = new AdvtDTO();
-
-            advtDTO.setId(advts.get(i).getId());
-            advtDTO.setTitle(advts.get(i).getTitle());
-            advtDTO.setInfo(advts.get(i).getInfo());
-            advtDTO.setPhotoBase64(advts.get(i).getPhoto());
-            advtDTO.setCost(advts.get(i).getCost());
-            advtDTO.setCompleted(advts.get(i).getCompleted());
-            advtDTO.setCategory(advts.get(i).getCategory().getName());
-            advtDTO.setUser_id(advts.get(i).getIdUser());
-
-            advtsDTO.add(advtDTO);
-
-        }
-
-        return advtsDTO;
 
     }
 
