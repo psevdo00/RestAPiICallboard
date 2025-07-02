@@ -3,40 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>Изменение объявления</title>
+    <link rel="stylesheet" href="css/style_advt.css">
 </head>
 <body>
-<header>
-
-<!--    <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>-->
-    <button id = "logOut" type="button" onclick="logOut()">Выйти из аккаунта</button>
-
+<header style="display: flex; justify-content: space-between;">
+    <div id="auth_user" style="display: flex; gap: 10px; align-items: flex-start;">
+        <button id="backToMain" class="btn-primary" onclick="window.location.href='index.html'">На главную</button>
+        <button id="logOut" type="button" class="btn-danger" onclick="logOut()">Выйти из аккаунта</button>
+        <p id="username_p"></p>
+    </div>
 </header>
 <main>
+    <div class="auth-container" style="max-width: 600px;">
+        <h1>Изменение объявления</h1>
 
-    <h2 style="text-align: center; margin-top: 50px;">Изменение объявления</h2>
+        <form class="auth-form">
+            <div class="form-input">
+                <label for="title">Заголовок объявления</label>
+                <input type="text" id="title" name="title" placeholder="Введите заголовок">
+            </div>
 
-    <form style="text-align: center">
+            <div class="form-input">
+                <label for="info">Описание</label>
+                <textarea id="info" name="info" placeholder="Подробное описание товара" style="min-height: 120px; padding: 12px 15px;"></textarea>
+            </div>
 
-        <input style="margin-top: 10px;" type="text" id="title" name="title" placeholder="Заголовок объявления"><br>
-        <textarea style="margin-top: 10px; width: 250px; height: 140px" id="info" name="info" placeholder="Описание"></textarea><br>
-        <input style="margin-top: 10px;" type="file" id="photoInput" name="photoInput" placeholder="Фотография"><br>
-        <input style="margin-top: 10px;" type="text" id="cost" name="cost" placeholder="Цена"><br><br>
+            <div class="form-input">
+                <label for="photoInput">Фотография товара</label>
+                <input type="file" id="photoInput" name="photoInput" style="padding: 8px 0;">
+                <p style="font-size: 12px; color: #666; margin-top: 5px;">Оставьте поле пустым, если не хотите менять фото</p>
+            </div>
 
-        <select id = "list_category">
-            <option value="" disabled selected>Выберите категорию товара</option>
-        </select><br>
+            <div class="form-input">
+                <label for="cost">Цена (руб.)</label>
+                <input type="text" id="cost" name="cost" placeholder="Введите цену">
+            </div>
 
-        <button style="margin-top: 10px;" type="button" onclick="updateAdvt()">Сохранить объявление!</button><br>
+            <div class="form-input">
+                <label for="list_category">Категория товара</label>
+                <select id="list_category" style="padding: 12px 15px; width: 100%;">
+                    <option value="" disabled selected>Выберите категорию</option>
+                </select>
+            </div>
 
-        <p>Предосмотр загруженного фото:</p><br><br>
-        <canvas id="previewPhoto" width="700" height="400"></canvas>
+            <div class="form-button">
+                <button type="button" onclick="updateAdvt()">Сохранить изменения</button>
+            </div>
+        </form>
 
-    </form>
+        <div style="margin-top: 30px; text-align: center;">
+            <h3>Текущее фото:</h3>
+            <img id="currentPhoto" src="" alt="Текущее фото объявления" style="max-width: 100%; max-height: 300px; border: 1px solid #ddd; margin: 10px 0;">
 
+            <h3>Предпросмотр нового фото:</h3>
+            <canvas id="previewPhoto" width="500" height="300" style="max-width: 100%; border: 1px solid #ddd; margin-top: 15px;"></canvas>
+        </div>
+    </div>
 </main>
-</body>
-<script src="./js/checkSession.js"></script>
+<script src="js/checkAuth.js"></script>
 <script src="js/editAdvt.js"></script>
 <script src="./js/previewEditPhoto.js"></script>
 <script src="js/createListCategory.js"></script>
+</body>
 </html>

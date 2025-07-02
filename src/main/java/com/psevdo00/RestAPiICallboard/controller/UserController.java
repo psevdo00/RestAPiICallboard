@@ -1,9 +1,8 @@
 package com.psevdo00.RestAPiICallboard.controller;
 
 import com.psevdo00.RestAPiICallboard.dto.request.AuthUserDTO;
+import com.psevdo00.RestAPiICallboard.dto.response.UserDTO;
 import com.psevdo00.RestAPiICallboard.dto.response.UserSessionDTO;
-import com.psevdo00.RestAPiICallboard.entity.UserEntity;
-import com.psevdo00.RestAPiICallboard.enums.UserRoleEnum;
 import com.psevdo00.RestAPiICallboard.service.UserService;
 import com.psevdo00.RestAPiICallboard.dto.request.CreateUserDTO;
 import jakarta.servlet.http.HttpSession;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("api/user")
 public class UserController {
 
     private final UserService service;
@@ -25,74 +24,34 @@ public class UserController {
         
     }
     
-    @PostMapping("/regUser")
-    public ResponseEntity registrationUsers(@Valid @RequestBody CreateUserDTO userValid, HttpSession session){
+    @PostMapping
+    public ResponseEntity createUsers(@Valid @RequestBody CreateUserDTO request){
 
-        UserSessionDTO userSessionDTO = service.registrationUser(userValid);
-
-        session.setAttribute("UserName", userSessionDTO.getUsername());
-        session.setAttribute("id", userSessionDTO.getId());
-        session.setAttribute("role", userSessionDTO.getRole().name());
-
-        return ResponseEntity.ok().body(Map.of(
-
-                "message", "Регистрация прошла успешно!",
-                "newURL", "/index.html"
-
-        ));
+        UserDTO response = service.createUser(request);
+        return ResponseEntity.ok(response);
 
     }
 
-    @PostMapping("/authUser")
-    public ResponseEntity authorizationUsers(@RequestBody AuthUserDTO userDTO, HttpSession session){
+    @PostMapping("/login")
+    public ResponseEntity loginUsers(@RequestBody AuthUserDTO request){
 
-        UserSessionDTO userSessionDTO = service.authorizationUsers(userDTO);
-
-        session.setAttribute("UserName", userSessionDTO.getUsername());
-        session.setAttribute("id", userSessionDTO.getId());
-        session.setAttribute("role", userSessionDTO.getRole().name());
-
-        return ResponseEntity.ok(Map.of(
-
-                "message", "Успешная авторизация!",
-                "newURL", "index.html")
-
-        );
+        UserDTO response = service.loginUser(request);
+        return ResponseEntity.ok(response);
 
     }
 
-    @GetMapping("/search")
-    public ResponseEntity findByEmail(@RequestParam String email){
+    @GetMapping
+    public ResponseEntity getUser(
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) Long id
+    ){
 
-        try {
-
-            return ResponseEntity.ok(service.findByEmail(email));
-
-        } catch (Exception e) {
-
-            return ResponseEntity.badRequest().body(Map.of("message", "Произошла ошибка во время поиска!"));
-
-        }
+        return ResponseEntity.ok(service.findWithFilters(email, id));
 
     }
 
-    @GetMapping("/searchById/{id}")
-    public ResponseEntity findById(Long id){
-
-        try {
-
-            return ResponseEntity.ok(service.findById(id));
-
-        } catch (Exception e) {
-
-            return ResponseEntity.badRequest().body(Map.of("message", "Произошла ошибка во время поиска!"));
-
-        }
-
-    }
-
-    @DeleteMapping("/deleteUser/{id}")
-    public ResponseEntity deleteUserById(@PathVariable Long id){
+    @DeleteMapping
+    public ResponseEntity deleteUserById(@RequestParam Long id){
 
         try {
 

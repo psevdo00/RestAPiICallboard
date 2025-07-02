@@ -49,8 +49,7 @@ async function updateAdvt(){
             break;
         case 400: {
 
-            const pError = document.getElementById("errors");
-            pError.textContent = result.message;
+            alert(result.message);
 
         }
             break;

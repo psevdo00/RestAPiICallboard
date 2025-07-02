@@ -8,8 +8,8 @@
 <body>
 <header>
     <div id="auth_user" style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
-        <button id="createAdvt" onclick="goToCreateAdvt()">Создать объявление</button>
-        <button id="logOut" type="button" onclick="logOut()">Выйти из аккаунта</button>
+        <button id="backToMain" class="btn-primary" onclick="window.location.href='index.html'">На главную</button>
+        <button id="logOut" type="button" class="btn-danger" onclick="logOut()">Выйти из аккаунта</button>
         <p id="username_p"></p>
     </div>
 
@@ -18,7 +18,7 @@
         <button id = "singUp" type="button" onclick="goReg()">Зарегистрироваться</button>
     </div>
 
-    <!--        <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>-->
+    <!--        <button id = "checkAuth" type="button" onclick="checkAuth()">Проверить значения сессии</button>-->
 </header>
 <main>
     <div id = "advt">
@@ -27,7 +27,7 @@
 </main>
 </body>
 <script src="js/openPageAdvt.js"></script>
-<script src="js/checkSession.js"></script>
+<script src="js/checkAuth.js"></script>
 <script src="js/verificationUser.js"></script>
 <!--<script src="js/functionAdvt.js"></script>-->
 </html>

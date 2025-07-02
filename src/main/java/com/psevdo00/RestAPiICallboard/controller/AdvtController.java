@@ -2,6 +2,7 @@ package com.psevdo00.RestAPiICallboard.controller;
 
 import com.psevdo00.RestAPiICallboard.dto.request.CreateAdvtDTO;
 import com.psevdo00.RestAPiICallboard.dto.response.AdvtDTO;
+import com.psevdo00.RestAPiICallboard.dto.response.UserDTO;
 import com.psevdo00.RestAPiICallboard.entity.AdvtEntity;
 import com.psevdo00.RestAPiICallboard.entity.CategoryEntity;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
@@ -22,10 +23,14 @@ import java.util.Objects;
 public class AdvtController {
 
     private final AdvtService service;
+    private final UserService userService;
 
-    public AdvtController(AdvtService service) { this.service = service; }
+    public AdvtController(AdvtService service, UserService userService) {
+        this.service = service;
+        this.userService = userService;
+    }
 
-    @PostMapping("/createAdvt")
+    @PostMapping
     public ResponseEntity createAdvt(@RequestBody CreateAdvtDTO advtDTO, HttpSession session){
 
         try{
@@ -47,8 +52,8 @@ public class AdvtController {
 
     }
 
-    @DeleteMapping("/deleteAdvt/{id}")
-    public ResponseEntity deleteAdvt(@PathVariable Long id){
+    @DeleteMapping
+    public ResponseEntity deleteAdvt(@RequestParam Long id){
 
         try {
 
@@ -63,8 +68,8 @@ public class AdvtController {
 
     }
 
-    @PutMapping("/updateStatusAdvt/{id}")
-    public ResponseEntity updateStatusAdvt(@PathVariable Long id){
+    @PutMapping
+    public ResponseEntity updateStatusAdvt(@RequestParam Long id){
 
         try {
 
@@ -92,69 +97,13 @@ public class AdvtController {
 
     }
 
-    @GetMapping("/searchAllAdvtByTitle/{title}")
-    public ResponseEntity searchAllAdvtByTitle(@PathVariable String title){
+    @GetMapping
+    public ResponseEntity getAdvt(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Long id_category
+    ){
 
-        try {
-
-            List<AdvtDTO> advtsDTO = service.searchAllAdvtByTitle(title);
-
-            return ResponseEntity.ok(Map.of(
-
-                    "message", "Поиск прошел успешно!",
-                    "list", advtsDTO
-
-            ));
-
-        } catch (Exception e) {
-
-            return ResponseEntity.badRequest().body(Map.of("message", "Ошибка с поиском! " + e));
-
-        }
-
-    }
-
-    @GetMapping("/getAllAdvt")
-    public ResponseEntity getAllAdvt(){
-
-        try{
-
-            List<AdvtDTO> advtsDTO = service.getAllAdvt();
-
-            return ResponseEntity.ok(Map.of(
-
-                    "message", "Ответ получен!",
-                    "list", advtsDTO
-
-            ));
-
-        } catch (Exception e){
-
-            return ResponseEntity.badRequest().body(Map.of("message", "Ошибка на стороне сервера!"));
-
-        }
-
-    }
-
-    @GetMapping("/searchAllAdvtByCategory/{id}")
-    public ResponseEntity searchAllAdvtByCategory(@PathVariable Long id){
-
-        try{
-
-            List<AdvtDTO> advtsDTO = service.searchAllAdvtByCategory(id);
-
-            return ResponseEntity.ok(Map.of(
-
-                    "message", "Ответ получен!",
-                    "list", advtsDTO
-
-            ));
-
-        } catch (Exception e){
-
-            return ResponseEntity.badRequest().body(Map.of("message", "Ошибка на стороне сервера!"));
-
-        }
+        return ResponseEntity.ok(service.findWithFilters(title, id_category));
 
     }
 
@@ -163,7 +112,7 @@ public class AdvtController {
 
         try {
 
-            service.editAdvt(advtDTO, session, id);
+            service.editAdvt(advtDTO, id);
 
             return ResponseEntity.ok(Map.of(
                     "message", "Изменения успешно сохранены!",

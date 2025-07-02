@@ -2,10 +2,12 @@ package com.psevdo00.RestAPiICallboard.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Base64;
 
 @Entity
+@Data
 public class AdvtEntity {
 
     @Id
@@ -17,7 +19,7 @@ public class AdvtEntity {
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] photo;
-    private String cost;
+    private int cost;
     private Boolean completed = false;
 
     @ManyToOne
@@ -30,30 +32,6 @@ public class AdvtEntity {
     @JsonBackReference
     private UserEntity user;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
     public String getPhoto() {
 
         if (this.photo != null){
@@ -64,38 +42,6 @@ public class AdvtEntity {
 
         return null;
 
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
-
-    public String getCost() {
-        return cost;
-    }
-
-    public void setCost(String cost) {
-        this.cost = cost;
-    }
-
-    public Boolean getCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(Boolean completed) {
-        this.completed = completed;
-    }
-
-    public CategoryEntity getCategory() { return category; }
-
-    public void setCategory(CategoryEntity category) { this.category = category; }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
     }
 
     public Long getIdUser(){

@@ -2,15 +2,20 @@ package com.psevdo00.RestAPiICallboard.service;
 
 import com.psevdo00.RestAPiICallboard.dto.request.AuthUserDTO;
 import com.psevdo00.RestAPiICallboard.dto.request.CreateUserDTO;
+import com.psevdo00.RestAPiICallboard.dto.response.UserDTO;
 import com.psevdo00.RestAPiICallboard.dto.response.UserSessionDTO;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
 import com.psevdo00.RestAPiICallboard.enums.UserRoleEnum;
+import com.psevdo00.RestAPiICallboard.exception.CustomApiException;
 import com.psevdo00.RestAPiICallboard.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -22,114 +27,128 @@ public class UserService {
         this.repository = repository;
     }
 
-    public UserSessionDTO registrationUser(CreateUserDTO userValid){
+    public UserDTO createUser(CreateUserDTO request){
 
         UserEntity user = new UserEntity();
 
-        user.setUsername(userValid.getUsername());
-        user.setEmail(userValid.getEmail());
-        user.setPhone(userValid.getPhone());
-        user.setPassword(userValid.getPassword());
-        user.setRepeatPassword(userValid.getRepeatPassword());
-        user.setRole(UserRoleEnum.USER);
+        UserEntity userCheck = repository.findByEmail(request.getEmail());
+        if (userCheck != null){
 
-        if (repository.findByEmail(user.getEmail()) != null) {
+            Map<String, String> err = new HashMap<>();
+            err.put("email", "Данная почта уже используется");
 
-            throw new ResponseStatusException(
+            if (userCheck.getUsername().equals(request.getUsername())){
 
-                    HttpStatus.BAD_REQUEST,
-                    "Пользователь с такой почтой уже существует!"
+                err.put("username", "Данный логин уже используется");
 
-            );
+            }
 
-        } else if (repository.findByUsername(user.getUsername()) != null){
+            if (userCheck.getNumPhone().equals(request.getNumPhone()) && !userCheck.getNumPhone().isEmpty()){
 
-            throw new ResponseStatusException(
+                err.put("numPhone", "Данный номер телефона уже используется");
 
-                    HttpStatus.BAD_REQUEST,
-                    "Пользователь с таким именем уже существует!"
+            }
 
-            );
-
-        } else if (!Objects.equals(user.getPassword(), user.getRepeatPassword())){
-
-            throw new ResponseStatusException(
+            throw new CustomApiException(
 
                     HttpStatus.BAD_REQUEST,
-                    "Пароли не совпадают!"
+                    err
 
             );
 
         }
 
+        user.setUsername(request.getUsername());
+        user.setFirstName(request.getFirstName());
+        user.setFamilyName(request.getFamilyName());
+        user.setMiddleName(request.getMiddleName());
+        user.setPassword(request.getPassword());
+        user.setEmail(request.getEmail());
+        user.setNumPhone(request.getNumPhone());
+        user.setAdvts(null);
+        user.setRole(UserRoleEnum.valueOf(request.getRole()));
+
         repository.save(user);
 
-        return repository.valuesForUserSessionDTO(user.getUsername());
+        UserEntity newUser = repository.findByEmail(request.getEmail());
+        return convertorUserEntityToUserDTO(newUser);
 
     }
 
-    public UserSessionDTO authorizationUsers(AuthUserDTO userDTO){
+    public UserDTO loginUser(AuthUserDTO request){
 
-        UserEntity user = repository.findByUsername(userDTO.getUsername());
+        UserEntity checkUser = repository.findByEmail(request.getEmail());
 
-        if (user != null){
+        Map<String, String> err = new HashMap<>();
 
-            if (userDTO.getPassword().equals(user.getPassword())){
+        if (checkUser != null){
 
-                return repository.valuesForUserSessionDTO(user.getUsername());
+            if (checkUser.getPassword().equals(request.getPassword())){
+
+                return convertorUserEntityToUserDTO(checkUser);
 
             } else {
 
-                throw new ResponseStatusException(
-
-                        HttpStatus.BAD_REQUEST,
-                        "Имя пользователя или пароль не верный!"
-
-                );
+                err.put("password", "Пароль неверный!");
 
             }
 
         } else {
 
-            throw new ResponseStatusException(
-
-                    HttpStatus.NOT_FOUND,
-                    "Данный пользователь не найден!"
-
-            );
+            err.put("email", "Пользователя с данной почтой нет!");
 
         }
 
+        throw new CustomApiException(
+
+                HttpStatus.BAD_REQUEST,
+                err
+
+        );
+
     }
 
-    public UserEntity findByEmail(String email){
+    public UserDTO findWithFilters(String email, Long id){
 
-        UserEntity user = repository.findByEmail(email);
+        Specification<UserEntity> spec = (root, query, cb) -> null;
 
-        if (user == null){
+        if (email != null){
 
-            throw new ResponseStatusException(
-
-                    HttpStatus.NOT_FOUND,
-                    "Пользователя с данной почтой нет!"
-
-            );
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("email"), email));
 
         }
 
-            return user;
+        if (id != null){
+
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("id"), id));
+
+        }
+
+        UserEntity user = repository.findOne(spec).get();
+
+        return convertorUserEntityToUserDTO(user);
 
     }
 
-    public UserEntity findById(Long id){
+    public UserEntity findUserEntityWithFilters(String email, Long id){
 
-        return repository.findById(id).orElseThrow();
+        Specification<UserEntity> spec = (root, query, cb) -> null;
 
-    }
+        if (email != null){
 
-    public UserEntity findByUsername(String username){
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("email"), email));
 
-        return repository.findByUsername(username);
+        }
+
+        if (id != null){
+
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("id"), id));
+
+        }
+
+        UserEntity user = repository.findOne(spec).get();
+
+        return user;
 
     }
 
@@ -137,6 +156,23 @@ public class UserService {
 
         repository.deleteById(id);
         return id;
+
+    }
+
+    public UserDTO convertorUserEntityToUserDTO(UserEntity user){
+
+        UserDTO response = new UserDTO();
+
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setFirstName(user.getFirstName());
+        response.setFamilyName(user.getFamilyName());
+        response.setMiddleName(user.getMiddleName());
+        response.setEmail(user.getEmail());
+        response.setNumPhone(user.getNumPhone());
+        response.setRole(user.getRole().toString());
+
+        return response;
 
     }
 

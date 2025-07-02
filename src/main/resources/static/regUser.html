@@ -1,45 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Страница регистрации</title>
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="css/style_advt.css">
     <script src="js/authAndRegUser.js"></script>
-    <script src="./js/checkSession.js"></script>
 </head>
 <body>
-<main>
+<main class="reg-container">
+    <h1>Регистрация</h1>
 
-    <header>
+    <form class="reg-form" onsubmit="reg(event)">
+        <div class="form-input">
+            <label for="familyName">Фамилия*</label>
+            <input type="text" id="familyName" placeholder="Введите вашу фамилию" required>
+            <div id="err_familyName" class="error-message"></div>
+        </div>
 
-<!--        <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>-->
-        <button type="button" onclick="goAuth()">Авторизация</button>
+        <div class="form-input">
+            <label for="firstName">Имя*</label>
+            <input type="text" id="firstName" placeholder="Введите ваше имя" required>
+            <div id="err_firstName" class="error-message"></div>
+        </div>
 
-    </header>
+        <div class="form-input">
+            <label for="middleName">Отчество</label>
+            <input type="text" id="middleName" placeholder="Введите ваше отчество (при наличии)">
+            <div id="err_middleName" class="error-message"></div>
+        </div>
 
-    <h1 style="text-align: center">Регистрация</h1>
-    <form style="text-align: center">
+        <div class="form-input">
+            <label for="email">Email*</label>
+            <input type="email" id="email" placeholder="Введите ваш email" required>
+            <div id="err_email" class="error-message"></div>
+        </div>
 
-        <input id = "username" type = "text" name = "username" placeholder="Имя пользователя">
-        <p style = "margin: 0; text-align: center; color: red" id = "username_error"></p><br>
-        <input id = "email" type = "text" name = "email" placeholder="Email">
-        <p style = "margin: 0; text-align: center; color: red" id = "email_error"></p><br>
-        <input id = "phone" type = "text" name = "phone" placeholder="Номер телефона">
-        <p style = "margin: 0; text-align: center; color: red" id = "phone_error"></p><br>
-        <input id = "password" type = "password" name = "password" placeholder="Пароль">
-        <p style = "margin: 0; text-align: center; color: red" id = "password_error"></p><br>
-        <input id = "repeatPassword" type = "password" name = "repeatPassword" placeholder="Повторите пароль">
-        <p style = "margin: 0; text-align: center; color: red" id = "repeatPassword_error"></p><br><br>
+        <div class="form-input">
+            <label for="username">Логин*</label>
+            <input type="text" id="username" placeholder="Введите ваш логин" required>
+            <div id="err_username" class="error-message"></div>
+        </div>
 
-        <button type="button" onclick="reg()">Зарегистрироваться</button>
+        <div class="form-input">
+            <label for="numPhone">Телефон</label>
+            <input type="tel" id="numPhone" placeholder="+7 (___) ___-__-__">
+            <div id="err_numPhone" class="error-message"></div>
+        </div>
 
+        <div class="form-input">
+            <label for="password">Пароль*</label>
+            <input type="password" id="password" placeholder="Придумайте пароль" required>
+            <div id="err_password" class="error-message"></div>
+        </div>
+
+        <div class="form-input">
+            <label for="confirm-password">Подтвердите пароль*</label>
+            <input type="password" id="confirm-password" placeholder="Повторите пароль" required>
+            <div id="err_passwordRepeat" class="error-message"></div>
+        </div>
+
+        <div class="form-button">
+            <button class="btn-primary" type="submit">Зарегистрироваться</button>
+        </div>
     </form>
 
-    <div id = "errors_block">
-
-        <p style = "text-align: center; color: red" id = "errors"></p>
-
+    <div class="form-switch">
+        Уже есть аккаунт? <a href="authUser.html">Войдите</a>
     </div>
 
+    <div id="errors_block" class="form-error">
+        <p id="errors"></p>
+    </div>
 </main>
 </body>
 </html>

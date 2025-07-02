@@ -6,27 +6,55 @@
     <link rel = "stylesheet" href="css/style_advt.css">
 </head>
 <body>
-    <header style = "display: flex;">
-        <div id="auth_user" style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
-            <button id="createAdvt" onclick="goToCreateAdvt()">Создать объявление</button>
-            <button id="logOut" type="button" onclick="logOut()">Выйти из аккаунта</button>
-            <p id="username_p"></p>
+    <header class="main-header">
+        <!-- Логотип и основное меню -->
+        <div class="header-left">
+            <div class="logo">
+                <span>ДоскаОбъявлений</span>
+            </div>
+
+            <nav class="main-nav">
+                <ul id = "nav">
+                    <li><a href="index.html"><i class="fas fa-list"></i> Каталог</a></li>
+                    <li><a href="personal.html"><i class="fas fa-user"></i> Кабинет</a></li>
+                    <li><a href="news.html"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="contacts.html"><i class="fas fa-headset"></i> Поддержка</a></li>
+                    <li><a href="tips.html"><i class="fas fa-lightbulb"></i> Советы</a></li>
+                </ul>
+            </nav>
         </div>
 
-        <div id = "no_auth_user" style = "display: flex">
-            <button id = "singIn" type="button" onclick="goAuth()">Войти</button>
-            <button id = "singUp" type="button" onclick="goReg()">Зарегистрироваться</button>
+        <!-- Поиск и авторизация -->
+        <div class="header-right">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Найти объявление...">
+                <button id="searchButton"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div id="auth_user" class="user-auth">
+                <div class="auth-buttons-container">
+                    <button id="createAdvt" class="btn-primary" onclick="goToCreateAdvt()">
+                        <i class="fas fa-plus"></i> Создать
+                    </button>
+                    <div class="user-dropdown">
+                        <span id="username_p" class="username-display"></span>
+                        <div class="dropdown-content">
+                            <a href="personal.html"><i class="fas fa-user-cog"></i> Профиль</a>
+                            <a id="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="no_auth_user" class="guest-auth" style="display: flex; align-items: center; gap: 10px;">
+                <button id="singIn" class="btn-outline" onclick="goAuth()">
+                    <i class="fas fa-sign-in-alt"></i> Войти
+                </button>
+                <button id="singUp" class="btn-primary" onclick="goReg()">
+                    <i class="fas fa-user-plus"></i> Регистрация
+                </button>
+            </div>
         </div>
-
-<!--        <button id = "checkSession" type="button" onclick="checkSession()">Проверить значения сессии</button>-->
-
-        <div class = "search_div">
-
-            <input id = "searchInput" type = "text" placeholder="Поиск" style = "width: 250px">
-            <button id = "searchButton" type="button" onclick="">Найти!</button>
-
-        </div>
-
     </header>
     <main>
         <div class="advts">
@@ -46,7 +74,7 @@
     <footer>
 
     </footer>
-    <script src="js/checkSession.js"></script>
+    <script src="js/checkAuth.js"></script>
     <script src="js/createFullListAdvt.js"></script>
     <script src="js/authAndRegUser.js"></script>
     <script src="js/verificationUser.js"></script>
@@ -54,3 +82,5 @@
     <script src="js/functionAdvt.js"></script>
 </body>
 </html>
+
+

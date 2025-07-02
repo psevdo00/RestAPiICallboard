@@ -7,6 +7,7 @@ import com.psevdo00.RestAPiICallboard.entity.CategoryEntity;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
 import com.psevdo00.RestAPiICallboard.repository.AdvtRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class AdvtService {
 
         Long id = (Long) session.getAttribute("id");
 
-        UserEntity user = userService.findById(id);
+        UserEntity user = userService.findUserEntityWithFilters(null, id);
         advt.setUser(user);
 
         repository.save(advt);
@@ -69,42 +70,29 @@ public class AdvtService {
 
     }
 
-    public AdvtEntity findById(Long id){
+    public List<AdvtDTO> findWithFilters(String title, Long id_category){
 
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(
+        Specification<AdvtEntity> spec = (root, query, cb) -> null;
 
-                HttpStatus.NOT_FOUND,
-                "Данного объявления нет!"
+        if (title != null){
 
-        ));
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("title"), title));
 
-    }
+        }
 
-    public List<AdvtDTO> searchAllAdvtByTitle(String title){
+        if (id_category != null){
 
-        List<AdvtEntity> advts = repository.findByTitle(title);
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("id_category"), id_category));
 
-        return advtEntityToAdvtDTO(advts);
+        }
 
-    }
+        List<AdvtEntity> list = repository.findAll(spec);
 
-    public List<AdvtDTO> getAllAdvt(){
-
-        List<AdvtEntity> advts = repository.findAll();
-
-        return advtEntityToAdvtDTO(advts);
+        return advtEntityToAdvtDTO(list);
 
     }
 
-    public List<AdvtDTO> searchAllAdvtByCategory(Long id) {
-
-        List<AdvtEntity> advts = repository.findByCategory(id);
-
-        return advtEntityToAdvtDTO(advts);
-
-    }
-
-    public void editAdvt(CreateAdvtDTO advtDTO, HttpSession session, Long id){
+    public void editAdvt(CreateAdvtDTO advtDTO, Long id){
 
         AdvtEntity advt = repository.findById(id).get();
 

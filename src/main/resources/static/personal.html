@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="css/style_advt.css">
+</head>
+<body>
+<header class="main-header">
+    <!-- Логотип и основное меню -->
+    <div class="header-left">
+        <div class="logo" onclick="window.location.href='index.html'">
+            <span>ДоскаОбъявлений</span>
+        </div>
+
+        <nav class="main-nav">
+            <ul id = "nav">
+                <li><a href="index.html"><i class="fas fa-list"></i> Каталог</a></li>
+                <li><a href="personal.html"><i class="fas fa-user"></i> Кабинет</a></li>
+                <li><a href="news.html"><i class="fas fa-newspaper"></i> Новости</a></li>
+                <li><a href="contacts.html"><i class="fas fa-headset"></i> Поддержка</a></li>
+                <li><a href="tips.html"><i class="fas fa-lightbulb"></i> Советы</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Поиск и авторизация -->
+    <div class="header-right">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Найти объявление...">
+            <button id="searchButton"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div id="auth_user" class="user-auth">
+            <div class="auth-buttons-container">
+                <button id="createAdvt" class="btn-primary" onclick="goToCreateAdvt()">
+                    <i class="fas fa-plus"></i> Создать
+                </button>
+                <div class="user-dropdown">
+                    <span id="username_p" class="username-display"></span>
+                    <div class="dropdown-content">
+                        <a href="personal.html"><i class="fas fa-user-cog"></i> Профиль</a>
+                        <a id="btn-logout" onclick="logOut()"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="personal-container">
+        <div class="personal-sidebar">
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h3 id="user-fullname"></h3>
+                <p id="user-email"></p>
+                <button class="btn-outline" onclick="openEditProfile()">
+                    <i class="fas fa-edit"></i> Редактировать
+                </button>
+            </div>
+
+            <nav class="personal-menu">
+                <ul>
+                    <li class="active"><a href="#profile"><i class="fas fa-user"></i> Профиль</a></li>
+                    <li><a href="#my-ads"><i class="fas fa-list"></i> Мои объявления</a></li>
+                    <li><a href="#favorites"><i class="fas fa-heart"></i> Избранное</a></li>
+                    <li><a href="#messages"><i class="fas fa-envelope"></i> Сообщения</a></li>
+                    <li><a href="#settings"><i class="fas fa-cog"></i> Настройки</a></li>
+                    <li><a onclick="logOut()"><i class="fas fa-cog"></i> Выйти</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="personal-content">
+            <section id="profile-section">
+                <h2>Мой профиль</h2>
+                <div class="profile-info">
+                    <div class="info-row">
+                        <span class="info-label">Логин:</span>
+                        <span id="profile-firstname" class="info-value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email:</span>
+                        <span id="profile-email" class="info-value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Телефон:</span>
+                        <span id="profile-phone" class="info-value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Роль:</span>
+                        <span id="profile-role" class="info-value"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="my-ads-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Мои объявления</h2>
+                    <button class="btn-primary" onclick="goToCreateAdvt()">
+                        <i class="fas fa-plus"></i> Добавить объявление
+                    </button>
+                </div>
+
+                <div class="ads-filter">
+                    <select id="ads-status-filter">
+                        <option value="all">Все объявления</option>
+                        <option value="active">Активные</option>
+                        <option value="hidden">Скрытые</option>
+                        <option value="archived">Архивные</option>
+                    </select>
+                </div>
+
+                <div id="my-ads-container" class="advt_cards">
+                    <!-- Контейнер для объявлений пользователя -->
+                </div>
+            </section>
+
+            <section id="favorites-section" style="display: none;">
+                <h2>Избранное</h2>
+                <div id="favorites-container" class="advt_cards">
+                    <!-- Контейнер для избранных объявлений -->
+                </div>
+            </section>
+
+            <section id="messages-section" style="display: none;">
+                <h2>Сообщения</h2>
+                <div id="messages-container" class="messages-list">
+                    <!-- Контейнер для сообщений -->
+                </div>
+            </section>
+
+            <section id="settings-section" style="display: none;">
+                <h2>Настройки</h2>
+                <form class="settings-form">
+                    <div class="form-input">
+                        <label for="notifications">Уведомления по email</label>
+                        <select id="notifications">
+                            <option value="all">Все уведомления</option>
+                            <option value="important">Только важные</option>
+                            <option value="none">Не присылать</option>
+                        </select>
+                    </div>
+
+                    <div class="form-input">
+                        <label>
+                            <input type="checkbox" id="newsletter"> Подписаться на новости и акции
+                        </label>
+                    </div>
+
+                    <div class="form-input">
+                        <label for="theme">Тема интерфейса</label>
+                        <select id="theme">
+                            <option value="light">Светлая</option>
+                            <option value="dark">Темная</option>
+                            <option value="system">Как в системе</option>
+                        </select>
+                    </div>
+
+                    <div class="form-button">
+                        <button type="submit" class="btn-primary">Сохранить настройки</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</main>
+<script src="js/checkAuth.js"></script>
+<script src="js/authAndRegUser.js"></script>
+<script src="js/personalUser.js"></script>
+</body>
+</html>

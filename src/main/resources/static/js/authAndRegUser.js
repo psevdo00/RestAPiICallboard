@@ -1,65 +1,28 @@
-async function reg(){
+async function reg(event){
 
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-    const phone = document.getElementById("phone").value;
-    const password = document.getElementById("password").value;
-    const repeatPassword = document.getElementById("repeatPassword").value;
+    event.preventDefault();
 
-    const response = await fetch("api/users/regUser", {
-
-        method: 'POST',
-        headers: {
-
-            "Content-Type": "application/json"
-
-        },
-        body: JSON.stringify({username, email, phone, password, repeatPassword})
-
+    // Сначала скрываем все ошибки и убираем красные рамки
+    document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+    });
+    document.querySelectorAll('input').forEach(input => {
+        input.classList.remove('error');
     });
 
-    const result = await response.json(); // преобразование ответа в JSON
+    const passwordValue = document.getElementById("password").value;
+    const passwordRepeatValue = document.getElementById("confirm-password").value;
 
-    switch (response.status){
+    if (passwordValue !== passwordRepeatValue){
 
-        case 200: {
-
-            alert(result.message);
-
-            window.location.href = result.newURL;
-
-        }
-        break;
-        case 400: {
-
-            const usernameError = document.getElementById("username_error");
-            const emailError = document.getElementById("email_error");
-            const phoneError = document.getElementById("phone_error");
-            const passwordError = document.getElementById("password_error");
-            const repeatPasswordError = document.getElementById("repeatPassword_error");
-
-            usernameError.textContent = result.username;
-            emailError.textContent = result.email;
-            phoneError.textContent = result.phone;
-            passwordError.textContent = result.password;
-            repeatPasswordError.textContent = result.passwordMatching;
-
-            const pError = document.getElementById("errors");
-            pError.textContent = result.message;
-
-        }
-        break;
-        default: alert("Ошибка с запросом на сервер!");
+        const errDivRepeatPassword = document.getElementById("err_passwordRepeat");
+        errDivRepeatPassword.textContent = "Пароли не совпадают!";
+        errDivRepeatPassword.style.display = 'block';
+        return;
 
     }
-}
 
-async function auth(){
-
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-
-    const response = await fetch("api/users/authUser", {
+    const response = await fetch("api/user", {
 
         method: 'POST',
         headers: {
@@ -67,7 +30,9 @@ async function auth(){
             "Content-Type": "application/json"
 
         },
-        body: JSON.stringify({username, password})
+        body: JSON.stringify({familyName: document.getElementById("familyName").value, firstName: document.getElementById("firstName").value,
+            middleName: document.getElementById("middleName").value, email: document.getElementById("email").value, username: document.getElementById("username").value,
+            numPhone: document.getElementById("numPhone").value, password: passwordValue, role: "USER"})
 
     });
 
@@ -77,21 +42,86 @@ async function auth(){
 
         case 200: {
 
-            alert(result.message);
-
-            window.location.href = result.newURL;
+            sessionStorage.setItem("user", JSON.stringify(result));
+            window.location.href = "/index.html";
 
         }
             break;
+
         case 400: {
 
-            const pError = document.getElementById("errors");
-            pError.textContent = result.message;
+            print_array(result);
 
         }
             break;
-        default: alert("Ошибка с запросом на сервер!");
 
+    }
+}
+
+async function auth(event){
+
+    event.preventDefault();
+
+    // Сначала скрываем все ошибки и убираем красные рамки
+    document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+    });
+    document.querySelectorAll('input').forEach(input => {
+        input.classList.remove('error');
+    });
+
+    const emailValue = document.getElementById("email").value;
+    const passwordValue = document.getElementById("password").value;
+
+    const response = await fetch("api/user/login", {
+
+        method: 'POST',
+        headers: {
+
+            "Content-Type": "application/json"
+
+        },
+        body: JSON.stringify({email: emailValue, password: passwordValue})
+
+    });
+
+    const result = await response.json();
+
+    switch (response.status){
+
+        case 200: {
+
+            sessionStorage.setItem("user", JSON.stringify(result));
+            window.location.href = "/index.html";
+
+        }
+            break;
+
+        case 400: {
+
+            print_array(result);
+
+        }
+            break;
+
+    }
+
+}
+
+function print_array(result){
+
+    document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+    });
+
+    for (const field in result) {
+        const errorDiv = document.getElementById(`err_${field}`);
+        const inputField = document.getElementById(field);
+        if (errorDiv && inputField) {
+            errorDiv.textContent = result[field];
+            errorDiv.style.display = 'block';
+            inputField.classList.add('error');
+        }
     }
 
 }

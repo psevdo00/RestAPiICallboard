@@ -65,7 +65,7 @@ async function getAllAdvt(){
 
     p_not_result_in_search.style = "display: none";
 
-    const response = await fetch("api/advt/getAllAdvt", {
+    const response = await fetch("api/advt", {
 
         method: "GET",
         headers: {
@@ -106,7 +106,7 @@ async function fetchAdvtList(result) {
 
     const listAdvt = result.list;
 
-    const currUser = await getCurrRoleUser(); // получение роли и id текущего пользователя
+    const currUser = JSON.parse(sessionStorage.getItem("user")); // получение роли и id текущего пользователя
 
     const container = document.getElementById('container');
 
@@ -158,7 +158,7 @@ async function fetchAdvtList(result) {
         visibleButton.textContent = "👁️";
         visibleButton.id = "visible_button";
 
-        buttonDiv.classList.add("div_button");
+        buttonDiv.classList.add("advt-controls");
         closeButton.classList.add("close_button");
         editButton.classList.add("edit_button");
         visibleButton.classList.add("visible_button");
@@ -194,7 +194,7 @@ async function fetchAdvtList(result) {
 
         if (currUser.role !== "ADMIN"){
 
-            if (currUser.id_user !== listAdvt[i].user_id){
+            if (currUser.id !== listAdvt[i].user_id){
 
                 closeButton.style = "visibility: hidden;";
                 editButton.style = "visibility: hidden;";

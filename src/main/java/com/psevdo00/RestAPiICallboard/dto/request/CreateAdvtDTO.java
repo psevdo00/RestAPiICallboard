@@ -1,30 +1,17 @@
 package com.psevdo00.RestAPiICallboard.dto.request;
 
+import lombok.Data;
+
 import java.util.Base64;
 
+@Data
 public class CreateAdvtDTO {
 
     private String title;
     private String info;
     private String photoBase64;
-    private String cost;
+    private int cost;
     private Long categoryId;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
 
     public byte[] getPhotoBase64() {
 
@@ -41,23 +28,4 @@ public class CreateAdvtDTO {
 
     }
 
-    public void setPhotoBase64(String photoBase64) {
-        this.photoBase64 = photoBase64;
-    }
-
-    public String getCost() {
-        return cost;
-    }
-
-    public void setCost(String cost) {
-        this.cost = cost;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
 }

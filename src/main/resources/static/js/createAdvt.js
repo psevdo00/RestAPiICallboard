@@ -1,4 +1,6 @@
-async function createAdvt(){
+async function createAdvt(event){
+
+    event.preventDefault();
 
     const title = document.getElementById("title").value;
     const info = document.getElementById("info").value;
