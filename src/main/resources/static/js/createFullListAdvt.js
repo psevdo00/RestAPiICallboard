@@ -102,26 +102,27 @@ async function searchAllAdvtByCategory(id){
 
 }
 
-async function fetchAdvtList(result) {
+async function fetchAdvtList(advtArray) {
 
-    const listAdvt = result.list;
-
-    const currUser = JSON.parse(sessionStorage.getItem("user")); // получение роли и id текущего пользователя
-
+    const currUser = JSON.parse(sessionStorage.getItem("user"));
     const container = document.getElementById('container');
-
     container.innerHTML = '';
 
-    for(let i = 0; i < listAdvt.length; i++){
+    if (!advtArray || advtArray.length === 0) {
+        p_not_result_in_search.style = "display: inline-block";
+        return;
+    }
+
+    for(let i = 0; i < advtArray.length; i++){
 
         const newDiv = document.createElement('div');
         newDiv.id = "advt_card";
 
-        let mimeType = getImageMimeType(listAdvt[i].photoBase64);
-        let src = `data:${mimeType};base64,${listAdvt[i].photoBase64}`;
+        let mimeType = getImageMimeType(advtArray[i].photoBase64);
+        let src = `data:${mimeType};base64,${advtArray[i].photoBase64}`;
 
         const pCategory = document.createElement("p");
-        pCategory.textContent = "Категория товара: " + listAdvt[i].category;
+        pCategory.textContent = "Категория товара: " + advtArray[i].category;
         pCategory.style = "margin-left: 5px"
 
         const divImg = document.createElement('div');
@@ -132,15 +133,15 @@ async function fetchAdvtList(result) {
         img.classList.add('photo_img');
 
         const title = document.createElement("p");
-        title.textContent = listAdvt[i].title;
+        title.textContent = advtArray[i].title;
         title.id = "title";
 
         const cost = document.createElement("p");
-        cost.textContent = listAdvt[i].cost;
+        cost.textContent = advtArray[i].cost;
         cost.id = "cost";
 
         const id_p = document.createElement("p");
-        id_p.textContent = listAdvt[i].id;
+        id_p.textContent = advtArray[i].id;
         id_p.id = "id_p";
         id_p.style = "visibility: hidden; margin: 0;";
 
@@ -163,7 +164,7 @@ async function fetchAdvtList(result) {
         editButton.classList.add("edit_button");
         visibleButton.classList.add("visible_button");
 
-        if (listAdvt[i].completed === false){
+        if (advtArray[i].completed === false){
 
             newDiv.classList.add('advt_card');
             divImg.classList.add('container_img');
@@ -194,13 +195,13 @@ async function fetchAdvtList(result) {
 
         if (currUser.role !== "ADMIN"){
 
-            if (currUser.id !== listAdvt[i].user_id){
+            if (currUser.id !== advtArray[i].user_id){
 
                 closeButton.style = "visibility: hidden;";
                 editButton.style = "visibility: hidden;";
                 visibleButton.style = "visibility: hidden";
 
-                if (listAdvt[i].completed === true) {
+                if (advtArray[i].completed === true) {
 
                     continue;
 
