@@ -1,67 +1,54 @@
 package com.psevdo00.RestAPiICallboard.service;
 
-import com.psevdo00.RestAPiICallboard.dto.request.CreateAdvtDTO;
-import com.psevdo00.RestAPiICallboard.dto.response.AdvtDTO;
+import com.psevdo00.RestAPiICallboard.dto.request.AdvertisementCreateRequest;
+import com.psevdo00.RestAPiICallboard.dto.response.AdvertisementResponse;
 import com.psevdo00.RestAPiICallboard.entity.AdvtEntity;
 import com.psevdo00.RestAPiICallboard.entity.CategoryEntity;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
-import com.psevdo00.RestAPiICallboard.repository.AdvtRepository;
-import jakarta.servlet.http.HttpSession;
+import com.psevdo00.RestAPiICallboard.repository.AdvertisementRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
-public class AdvtService {
+@RequiredArgsConstructor
+public class AdvertisementService {
 
-    private final AdvtRepository repository;
+    private final AdvertisementRepository repository;
     private final CategoryService categoryService;
     private final UserService userService;
 
-    public AdvtService(AdvtRepository repository, UserService userService, CategoryService categoryService) {
-
-        this.repository = repository;
-        this.categoryService = categoryService;
-        this.userService = userService;
-
-    }
-
-    public void createAdvt(CreateAdvtDTO advtDTO, HttpSession session){
+    public void create(AdvertisementCreateRequest request){
 
         AdvtEntity advt = new AdvtEntity();
 
-        advt.setTitle(advtDTO.getTitle());
-        advt.setInfo(advtDTO.getInfo());
-        advt.setPhoto(advtDTO.getPhotoBase64());
-        advt.setCost(advtDTO.getCost());
+        advt.setTitle(request.getTitle());
+        advt.setInfo(request.getInfo());
+        advt.setPhoto(request.getPhotoBase64());
+        advt.setCost(request.getCost());
 
-        CategoryEntity category = categoryService.findById(advtDTO.getCategoryId());
+        CategoryEntity category = categoryService.findById(request.getCategoryId());
         advt.setCategory(category);
 
-        Long id = (Long) session.getAttribute("id");
-
-        UserEntity user = userService.findUserEntityWithFilters(null, id);
+        UserEntity user = userService.findEntityWithFilters(null, request.getUser_id());
         advt.setUser(user);
 
         repository.save(advt);
 
     }
 
-    public Long deleteAdvt(Long id){
+    public void delete(Long id){
 
         repository.deleteById(id);
-        return id;
 
     }
 
-    public boolean updateStatusAdvt(Long id){
+    public boolean updateStatus(Long id){
 
         AdvtEntity advt = repository.findById(id).get();
         advt.setCompleted(!advt.getCompleted());
@@ -70,7 +57,7 @@ public class AdvtService {
 
     }
 
-    public List<AdvtDTO> findWithFilters(String title, Long id_category){
+    public List<AdvertisementResponse> findWithFilters(String title, Long id_category){
 
         Specification<AdvtEntity> spec = (root, query, cb) -> null;
 
@@ -88,11 +75,11 @@ public class AdvtService {
 
         List<AdvtEntity> list = repository.findAll(spec);
 
-        return advtEntityToAdvtDTO(list);
+        return convertorEntityToResponse(list);
 
     }
 
-    public void editAdvt(CreateAdvtDTO advtDTO, Long id){
+    public void edit(AdvertisementCreateRequest advtDTO, Long id){
 
         AdvtEntity advt = repository.findById(id).get();
 
@@ -119,13 +106,13 @@ public class AdvtService {
 
     }
 
-    public List<AdvtDTO> advtEntityToAdvtDTO(List<AdvtEntity> advts){
+    public List<AdvertisementResponse> convertorEntityToResponse(List<AdvtEntity> advts){
 
-        List<AdvtDTO> advtsDTO = new ArrayList<>();
+        List<AdvertisementResponse> advtsDTO = new ArrayList<>();
 
         for (int i = 0; i < advts.size(); i++){
 
-            AdvtDTO advtDTO = new AdvtDTO();
+            AdvertisementResponse advtDTO = new AdvertisementResponse();
 
             advtDTO.setId(advts.get(i).getId());
             advtDTO.setTitle(advts.get(i).getTitle());

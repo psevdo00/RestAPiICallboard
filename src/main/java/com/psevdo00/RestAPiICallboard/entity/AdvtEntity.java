@@ -19,6 +19,7 @@ public class AdvtEntity {
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] photo;
+
     private int cost;
     private Boolean completed = false;
 

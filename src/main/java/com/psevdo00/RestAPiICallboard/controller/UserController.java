@@ -1,41 +1,33 @@
 package com.psevdo00.RestAPiICallboard.controller;
 
-import com.psevdo00.RestAPiICallboard.dto.request.AuthUserDTO;
-import com.psevdo00.RestAPiICallboard.dto.response.UserDTO;
-import com.psevdo00.RestAPiICallboard.dto.response.UserSessionDTO;
+import com.psevdo00.RestAPiICallboard.dto.request.UserAuthorizationRequest;
+import com.psevdo00.RestAPiICallboard.dto.response.UserResponse;
 import com.psevdo00.RestAPiICallboard.service.UserService;
-import com.psevdo00.RestAPiICallboard.dto.request.CreateUserDTO;
-import jakarta.servlet.http.HttpSession;
+import com.psevdo00.RestAPiICallboard.dto.request.UserCreateRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/user")
 public class UserController {
 
     private final UserService service;
-
-    public UserController (UserService service){
-        
-        this.service = service;
-        
-    }
     
     @PostMapping
-    public ResponseEntity createUsers(@Valid @RequestBody CreateUserDTO request){
+    public ResponseEntity createUsers(@Valid @RequestBody UserCreateRequest request){
 
-        UserDTO response = service.createUser(request);
+        UserResponse response = service.create(request);
         return ResponseEntity.ok(response);
 
     }
 
     @PostMapping("/login")
-    public ResponseEntity loginUsers(@RequestBody AuthUserDTO request){
+    public ResponseEntity loginUsers(@RequestBody UserAuthorizationRequest request){
 
-        UserDTO response = service.loginUser(request);
+        UserResponse response = service.login(request);
         return ResponseEntity.ok(response);
 
     }
@@ -46,22 +38,14 @@ public class UserController {
             @RequestParam(required = false) Long id
     ){
 
-        return ResponseEntity.ok(service.findWithFilters(email, id));
+        return ResponseEntity.ok(service.findResponseWithFilters(email, id));
 
     }
 
     @DeleteMapping
-    public ResponseEntity deleteUserById(@RequestParam Long id){
+    public void deleteUserById(@RequestParam Long id){
 
-        try {
-
-            return ResponseEntity.ok("Удаление прошло успешно! ID: " + service.deleteUserById(id));
-
-        } catch (Exception e) {
-
-            return ResponseEntity.badRequest().body("Произошла ошибка с удалением пользователя!" + e);
-
-        }
+        service.delete(id);
 
     }
 

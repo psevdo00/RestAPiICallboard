@@ -3,7 +3,7 @@ package com.psevdo00.RestAPiICallboard.dto.response;
 import lombok.Data;
 
 @Data
-public class AdvtDTO {
+public class AdvertisementResponse {
 
     private Long id;
     private String title;

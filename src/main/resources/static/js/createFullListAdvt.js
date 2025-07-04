@@ -103,116 +103,57 @@ async function searchAllAdvtByCategory(id){
 }
 
 async function fetchAdvtList(advtArray) {
-
     const currUser = JSON.parse(sessionStorage.getItem("user"));
     const container = document.getElementById('container');
     container.innerHTML = '';
 
     if (!advtArray || advtArray.length === 0) {
-        p_not_result_in_search.style = "display: inline-block";
+        p_not_result_in_search.style.display = "inline-block";
         return;
     }
 
-    for(let i = 0; i < advtArray.length; i++){
-
-        const newDiv = document.createElement('div');
-        newDiv.id = "advt_card";
+    for (let i = 0; i < advtArray.length; i++) {
+        // Пропускаем скрытые completed объявления для неадминов
+        if (advtArray[i].completed === true && (!currUser || currUser.role !== "ADMIN")) {
+            continue;
+        }
 
         let mimeType = getImageMimeType(advtArray[i].photoBase64);
         let src = `data:${mimeType};base64,${advtArray[i].photoBase64}`;
 
-        const pCategory = document.createElement("p");
-        pCategory.textContent = "Категория товара: " + advtArray[i].category;
-        pCategory.style = "margin-left: 5px"
-
-        const divImg = document.createElement('div');
-        divImg.classList.add('container_img');
-
-        const img = document.createElement('img');
-        img.src = src;
-        img.classList.add('photo_img');
-
-        const title = document.createElement("p");
-        title.textContent = advtArray[i].title;
-        title.id = "title";
-
-        const cost = document.createElement("p");
-        cost.textContent = advtArray[i].cost;
-        cost.id = "cost";
-
-        const id_p = document.createElement("p");
-        id_p.textContent = advtArray[i].id;
-        id_p.id = "id_p";
-        id_p.style = "visibility: hidden; margin: 0;";
-
-        const buttonDiv = document.createElement("div");
-
-        const closeButton = document.createElement("button");
-        closeButton.textContent = "×";
-        closeButton.id = "close_button";
-
-        const editButton = document.createElement("button");
-        editButton.textContent = "✎";
-        editButton.id = "edit_button";
-
-        const visibleButton = document.createElement("button");
-        visibleButton.textContent = "👁️";
-        visibleButton.id = "visible_button";
-
-        buttonDiv.classList.add("advt-controls");
-        closeButton.classList.add("close_button");
-        editButton.classList.add("edit_button");
-        visibleButton.classList.add("visible_button");
-
-        if (advtArray[i].completed === false){
-
-            newDiv.classList.add('advt_card');
-            divImg.classList.add('container_img');
-            img.classList.add('photo_img');
-            title.classList.add('photo_title');
-            cost.classList.add('photo_title');
-
-        } else {
-
-            newDiv.classList.add('advt_card_not_visible');
-            divImg.classList.add('container_img_not_visible');
-            img.classList.add('photo_img_not_visible');
-            title.classList.add('photo_title_not_visible');
-            cost.classList.add('photo_title_not_visible');
-
-        }
-
-        buttonDiv.appendChild(visibleButton);
-        buttonDiv.appendChild(editButton);
-        buttonDiv.appendChild(closeButton);
-        newDiv.appendChild(buttonDiv);
-        divImg.appendChild(img);
-        newDiv.appendChild(divImg);
-        newDiv.appendChild(pCategory);
-        newDiv.appendChild(title);
-        newDiv.appendChild(cost);
-        newDiv.appendChild(id_p);
-
-        if (currUser.role !== "ADMIN"){
-
-            if (currUser.id !== advtArray[i].user_id){
-
-                closeButton.style = "visibility: hidden;";
-                editButton.style = "visibility: hidden;";
-                visibleButton.style = "visibility: hidden";
-
-                if (advtArray[i].completed === true) {
-
-                    continue;
-
-                }
-
+        // Логика видимости кнопок
+        let showButtons = false;
+        if (currUser) {
+            if (currUser.role === "ADMIN") {
+                showButtons = true;
+            } else if (currUser.id === advtArray[i].user_id) {
+                showButtons = true;
             }
-
         }
 
-        container.appendChild(newDiv);
+        // Классы для объявления (видимые / не видимые)
+        let cardClass = advtArray[i].completed === false ? 'advt_card' : 'advt_card_not_visible';
+        let imgContainerClass = advtArray[i].completed === false ? 'container_img' : 'container_img_not_visible';
+        let imgClass = advtArray[i].completed === false ? 'photo_img' : 'photo_img_not_visible';
+        let titleClass = advtArray[i].completed === false ? 'photo_title' : 'photo_title_not_visible';
+        let costClass = advtArray[i].completed === false ? 'photo_title' : 'photo_title_not_visible';
 
+        container.innerHTML += `
+            <div id="advt_card" class="${cardClass}">
+                <div class="advt-controls">
+                    <button id="visible_button" class="visible_button" style="visibility: ${showButtons ? 'visible' : 'hidden'};">👁️</button>
+                    <button id="edit_button" class="edit_button" style="visibility: ${showButtons ? 'visible' : 'hidden'};">✎</button>
+                    <button id="close_button" class="close_button" style="visibility: ${showButtons ? 'visible' : 'hidden'};">×</button>
+                </div>
+                <div class="${imgContainerClass}">
+                    <img src="${src}" class="${imgClass}">
+                </div>
+                <p style="margin-left: 5px;">Категория товара: ${advtArray[i].category}</p>
+                <p id="title" class="${titleClass}">${advtArray[i].title}</p>
+                <p id="cost" class="${costClass}">${advtArray[i].cost}</p>
+                <p id="id_p" style="visibility: hidden; margin: 0;">${advtArray[i].id}</p>
+            </div>
+        `;
     }
 }
 

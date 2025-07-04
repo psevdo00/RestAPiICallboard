@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class AuthUserDTO {
+public class UserAuthorizationRequest {
 
     @NotBlank(message = "Это поле не должно быть пустым!")
     private String email;

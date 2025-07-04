@@ -1,12 +1,12 @@
 package com.psevdo00.RestAPiICallboard.dto.response;
 
-public class CategoryDTO {
+public class CategoryResponse {
 
     private Long id;
     private String name;
     private Long idParent;
 
-    public CategoryDTO(Long id, String name, Long idParent) {
+    public CategoryResponse(Long id, String name, Long idParent) {
         this.id = id;
         this.name = name;
         this.idParent = idParent;

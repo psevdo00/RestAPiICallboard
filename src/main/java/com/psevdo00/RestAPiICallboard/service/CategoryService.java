@@ -1,28 +1,24 @@
 package com.psevdo00.RestAPiICallboard.service;
 
-import com.psevdo00.RestAPiICallboard.dto.response.CategoryDTO;
+import com.psevdo00.RestAPiICallboard.dto.response.CategoryResponse;
 import com.psevdo00.RestAPiICallboard.entity.CategoryEntity;
-import com.psevdo00.RestAPiICallboard.entity.UserEntity;
 import com.psevdo00.RestAPiICallboard.repository.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository repository;
 
-    public CategoryService(CategoryRepository repository) {
-        this.repository = repository;
-    }
-
-    public List<CategoryDTO> getAllCategories(){
+    public List<CategoryResponse> getAllCategories(){
 
         List<CategoryEntity> categories = repository.findAll();
-        List<CategoryDTO> categoryDTO = new ArrayList<>();
+        List<CategoryResponse> categoryDTO = new ArrayList<>();
 
         for (CategoryEntity cat : categories){
 
@@ -35,7 +31,7 @@ public class CategoryService {
 
             }
 
-            categoryDTO.add(new CategoryDTO(cat.getId(), cat.getName(), idParent));
+            categoryDTO.add(new CategoryResponse(cat.getId(), cat.getName(), idParent));
 
         }
 

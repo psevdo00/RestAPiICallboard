@@ -1,38 +1,23 @@
 package com.psevdo00.RestAPiICallboard.controller;
 
 import com.psevdo00.RestAPiICallboard.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/category")
 public class CategoryController {
 
-    private final CategoryService servise;
+    private final CategoryService service;
 
-    public CategoryController(CategoryService servise) {
-        this.servise = servise;
-    }
-
-    @GetMapping("/getAllCategory")
+    @GetMapping
     public ResponseEntity getAllCategory(){
 
-        try{
-
-            return ResponseEntity.ok(Map.of(
-                    "message", "Список категорий получен!",
-                    "listCategory", servise.getAllCategories()
-            ));
-
-        } catch (Exception e) {
-
-            return ResponseEntity.badRequest().body(Map.of("message", "Ошибка с получением категорий! " + e));
-
-        }
+        return ResponseEntity.ok(service.getAllCategories());
 
     }
 }

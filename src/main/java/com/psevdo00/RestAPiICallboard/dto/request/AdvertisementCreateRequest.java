@@ -5,13 +5,14 @@ import lombok.Data;
 import java.util.Base64;
 
 @Data
-public class CreateAdvtDTO {
+public class AdvertisementCreateRequest {
 
     private String title;
     private String info;
     private String photoBase64;
     private int cost;
     private Long categoryId;
+    private Long user_id;
 
     public byte[] getPhotoBase64() {
 

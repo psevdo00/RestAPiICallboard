@@ -23,11 +23,9 @@ public class GlobalExceptionHandler { // глобальный обрабочти
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity handleResponseStatusException(ResponseStatusException ex){ // ошибка с запросом к серверу
+    public ResponseEntity handleResponseStatusException(VerificationException ex){ // ошибка с запросом к серверу
 
-        Map<String, String> errors = new HashMap<>();
-        errors.put("message", ex.getReason());
-        return ResponseEntity.badRequest().body(errors);
+        return ResponseEntity.status(ex.getStatusCode()).body(ex.getErrors());
 
     }
 
