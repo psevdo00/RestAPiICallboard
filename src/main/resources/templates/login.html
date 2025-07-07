@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Авторизация</title>
-    <link rel="stylesheet" href="css/style_advt.css">
-    <script src="js/authAndRegUser.js"></script>
-    <script src="js/checkAuth.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/authAndRegUser.js}"></script>
+    <script th:src="@{/js/checkAuth.js}"></script>
 </head>
 <body>
+
+<div th:insert="~{fragment/authAndRegHeader :: header}"></div>
+
 <main class="auth-container">
     <h1>Авторизация</h1>
 
@@ -30,7 +33,7 @@
     </form>
 
     <div class="form-switch">
-        Нет аккаунта? <a href="regUser.html">Зарегистрируйтесь</a>
+        Нет аккаунта? <a href="register.html">Зарегистрируйтесь</a>
     </div>
 
     <div id="errors_block" class="form-error">

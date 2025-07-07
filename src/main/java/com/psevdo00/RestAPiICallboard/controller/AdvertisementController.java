@@ -55,10 +55,10 @@ public class AdvertisementController {
     @GetMapping
     public ResponseEntity getAdvt(
             @RequestParam(required = false) String title,
-            @RequestParam(required = false) Long id_category
+            @RequestParam(required = false) Long category
     ){
 
-        return ResponseEntity.ok(service.findWithFilters(title, id_category));
+        return ResponseEntity.ok(service.findWithFilters(title, category));
 
     }
 

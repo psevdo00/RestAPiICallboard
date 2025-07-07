@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Доска объявлений</title>
-    <link rel = "stylesheet" href="css/style_advt.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <header class="main-header">
@@ -74,12 +74,11 @@
     <footer>
 
     </footer>
-    <script src="js/checkAuth.js"></script>
-    <script src="js/createFullListAdvt.js"></script>
-    <script src="js/authAndRegUser.js"></script>
-    <script src="js/verificationUser.js"></script>
-    <script src="js/createListCategory.js"></script>
-    <script src="js/functionAdvt.js"></script>
+    <script th:src="@{/js/checkAuth.js}"></script>
+    <script th:src="@{/js/createFullListAdvt.js}"></script>
+    <script th:src="@{/js/authAndRegUser.js}"></script>
+    <script th:src="@{/js/createListCategory.js}"></script>
+    <script th:src="@{/js/functionAdvt.js}"></script>
 </body>
 </html>
 

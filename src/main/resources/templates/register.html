@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Регистрация</title>
-    <link rel="stylesheet" href="css/style_advt.css">
-    <script src="js/authAndRegUser.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/authAndRegUser.js}"></script>
 </head>
 <body>
+<div th:insert="~{fragment/authAndRegHeader :: header}"></div>
 <main class="reg-container">
     <h1>Регистрация</h1>
 
@@ -65,7 +66,7 @@
     </form>
 
     <div class="form-switch">
-        Уже есть аккаунт? <a href="authUser.html">Войдите</a>
+        Уже есть аккаунт? <a href="login.html">Войдите</a>
     </div>
 
     <div id="errors_block" class="form-error">

@@ -31,7 +31,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<AdvtEntity> advts;
+    private List<AdvertisementEntity> advts;
 
     private UserRoleEnum role;
 
