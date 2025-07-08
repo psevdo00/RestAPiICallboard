@@ -10,6 +10,7 @@ import com.psevdo00.RestAPiICallboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class UserService {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponse create(UserCreateRequest request){
 
@@ -31,11 +33,11 @@ public class UserService {
         user.setFirstName(request.getFirstName());
         user.setFamilyName(request.getFamilyName());
         user.setMiddleName(request.getMiddleName());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setEmail(request.getEmail());
         user.setNumPhone(request.getNumPhone());
         user.setAdvts(null);
-        user.setRole(UserRoleEnum.valueOf(request.getRole()));
+        user.setRole(UserRoleEnum.USER);
 
         repository.save(user);
 

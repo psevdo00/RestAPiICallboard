@@ -22,7 +22,7 @@ async function reg(event){
 
     }
 
-    const response = await fetch("api/user", {
+    const response = await fetch("/api/user", {
 
         method: 'POST',
         headers: {

@@ -8,7 +8,6 @@ import java.util.Base64;
 
 @Entity
 @Data
-@Table(name = "advt_entity")
 public class AdvertisementEntity {
 
     @Id

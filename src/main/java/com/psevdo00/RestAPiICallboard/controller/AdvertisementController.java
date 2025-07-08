@@ -2,8 +2,6 @@ package com.psevdo00.RestAPiICallboard.controller;
 
 import com.psevdo00.RestAPiICallboard.dto.request.AdvertisementCreateRequest;
 import com.psevdo00.RestAPiICallboard.service.AdvertisementService;
-import com.psevdo00.RestAPiICallboard.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

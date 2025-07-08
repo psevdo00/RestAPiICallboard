@@ -1,11 +1,12 @@
 package com.psevdo00.RestAPiICallboard.controller;
 
+import com.psevdo00.RestAPiICallboard.dto.request.CategoryCreateRequest;
+import com.psevdo00.RestAPiICallboard.dto.request.CategoryEditRequest;
 import com.psevdo00.RestAPiICallboard.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +19,20 @@ public class CategoryController {
     public ResponseEntity getAllCategory(){
 
         return ResponseEntity.ok(service.getAllCategories());
+
+    }
+
+    @PostMapping
+    public void category_create(@Valid @RequestBody CategoryCreateRequest request){
+
+        service.create(request);
+
+    }
+
+    @PatchMapping
+    public void editCategory(@Valid @RequestBody CategoryEditRequest request){
+
+        service.edit(request);
 
     }
 }
