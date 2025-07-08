@@ -1,6 +1,6 @@
 async function createListCategory(){
 
-    const response = await fetch("api/category/getAllCategory", {
+    const response = await fetch("api/category", {
 
         method: "GET",
         headers: {
@@ -9,8 +9,7 @@ async function createListCategory(){
 
     });
 
-    const result = await response.json();
-    const listCategory = result.listCategory;
+    const listCategory = await response.json();
 
     const selectList = document.getElementById("list_category");
     const divFilterContainer = document.getElementById("filterAdvt");

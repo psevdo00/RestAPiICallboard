@@ -15,9 +15,6 @@ public class CategoryEntity {
     @JoinColumn(name = "id_parent")
     private CategoryEntity parent;
 
-    public CategoryEntity() {
-    }
-
     public Long getId() {
         return id;
     }

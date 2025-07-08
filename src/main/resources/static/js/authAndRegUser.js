@@ -22,7 +22,7 @@ async function reg(event){
 
     }
 
-    const response = await fetch("api/user", {
+    const response = await fetch("/api/user", {
 
         method: 'POST',
         headers: {
@@ -128,12 +128,12 @@ function print_array(result){
 
 function goReg(){
 
-    window.location.href = "regUser.html";
+    window.location.href = "register.html";
 
 }
 
 function goAuth(){
 
-    window.location.href = "authUser.html";
+    window.location.href = "login.html";
 
 }

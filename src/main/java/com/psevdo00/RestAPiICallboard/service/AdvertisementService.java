@@ -2,7 +2,7 @@ package com.psevdo00.RestAPiICallboard.service;
 
 import com.psevdo00.RestAPiICallboard.dto.request.AdvertisementCreateRequest;
 import com.psevdo00.RestAPiICallboard.dto.response.AdvertisementResponse;
-import com.psevdo00.RestAPiICallboard.entity.AdvtEntity;
+import com.psevdo00.RestAPiICallboard.entity.AdvertisementEntity;
 import com.psevdo00.RestAPiICallboard.entity.CategoryEntity;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
 import com.psevdo00.RestAPiICallboard.repository.AdvertisementRepository;
@@ -25,7 +25,7 @@ public class AdvertisementService {
 
     public void create(AdvertisementCreateRequest request){
 
-        AdvtEntity advt = new AdvtEntity();
+        AdvertisementEntity advt = new AdvertisementEntity();
 
         advt.setTitle(request.getTitle());
         advt.setInfo(request.getInfo());
@@ -50,16 +50,16 @@ public class AdvertisementService {
 
     public boolean updateStatus(Long id){
 
-        AdvtEntity advt = repository.findById(id).get();
+        AdvertisementEntity advt = repository.findById(id).get();
         advt.setCompleted(!advt.getCompleted());
         repository.save(advt);
         return advt.getCompleted();
 
     }
 
-    public List<AdvertisementResponse> findWithFilters(String title, Long id_category){
+    public List<AdvertisementResponse> findWithFilters(String title, Long category){
 
-        Specification<AdvtEntity> spec = (root, query, cb) -> null;
+        Specification<AdvertisementEntity> spec = Specification.where(null);
 
         if (title != null){
 
@@ -67,13 +67,14 @@ public class AdvertisementService {
 
         }
 
-        if (id_category != null){
+        if (category != null){
 
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("id_category"), id_category));
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("category").get("id"), category));
 
         }
 
-        List<AdvtEntity> list = repository.findAll(spec);
+        List<AdvertisementEntity> list = repository.findAll(spec);
+        System.out.println("Found " + list.size() + " advts");
 
         return convertorEntityToResponse(list);
 
@@ -81,7 +82,7 @@ public class AdvertisementService {
 
     public void edit(AdvertisementCreateRequest advtDTO, Long id){
 
-        AdvtEntity advt = repository.findById(id).get();
+        AdvertisementEntity advt = repository.findById(id).get();
 
         if (advt == null){
 
@@ -106,7 +107,7 @@ public class AdvertisementService {
 
     }
 
-    public List<AdvertisementResponse> convertorEntityToResponse(List<AdvtEntity> advts){
+    public List<AdvertisementResponse> convertorEntityToResponse(List<AdvertisementEntity> advts){
 
         List<AdvertisementResponse> advtsDTO = new ArrayList<>();
 

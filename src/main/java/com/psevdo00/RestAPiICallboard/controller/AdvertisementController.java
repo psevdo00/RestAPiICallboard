@@ -2,8 +2,6 @@ package com.psevdo00.RestAPiICallboard.controller;
 
 import com.psevdo00.RestAPiICallboard.dto.request.AdvertisementCreateRequest;
 import com.psevdo00.RestAPiICallboard.service.AdvertisementService;
-import com.psevdo00.RestAPiICallboard.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,10 +53,10 @@ public class AdvertisementController {
     @GetMapping
     public ResponseEntity getAdvt(
             @RequestParam(required = false) String title,
-            @RequestParam(required = false) Long id_category
+            @RequestParam(required = false) Long category
     ){
 
-        return ResponseEntity.ok(service.findWithFilters(title, id_category));
+        return ResponseEntity.ok(service.findWithFilters(title, category));
 
     }
 
