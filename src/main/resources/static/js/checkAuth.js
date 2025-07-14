@@ -25,7 +25,13 @@ function checkAuthState() {
     noAuthUser.style.display = "flex";
 }
 
-function logout(){
+async function logout(){
+
+    await fetch("/logout", {
+
+        method: "POST"
+
+    });
 
     sessionStorage.clear();
     location.reload(true);

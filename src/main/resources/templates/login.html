@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/authAndRegUser.js}"></script>
+    <script th:src="@{/js/checkAuth.js}"></script>
+</head>
+<body>
+
+<div th:insert="~{fragment/authAndRegHeader :: header}"></div>
+
+<main class="auth-container">
+    <h1>Авторизация</h1>
+
+    <form class="auth-form" method="post" onsubmit="auth(event)">
+        <div class="form-input">
+            <label for="username">Логин</label>
+            <input type="text" name="username" id="username" placeholder="Введите ваш логин" required>
+            <div id="err_username" class="error-message"></div>
+        </div>
+
+        <div class="form-input">
+            <label for="password">Пароль</label>
+            <input type="password" name="password" id="password" placeholder="Введите ваш пароль" required>
+            <div id="err_password" class="error-message"></div>
+        </div>
+
+        <div class="form-button">
+            <button class="btn-primary" type="submit">Авторизоваться</button>
+        </div>
+    </form>
+
+    <div class="form-switch">
+        Нет аккаунта? <a href="register.html">Зарегистрируйтесь</a>
+    </div>
+
+    <div id="errors_block" class="form-error">
+        <p id="errors"></p>
+    </div>
+</main>
+</body>
+</html>

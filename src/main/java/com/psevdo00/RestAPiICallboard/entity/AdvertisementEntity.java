@@ -8,7 +8,7 @@ import java.util.Base64;
 
 @Entity
 @Data
-public class AdvtEntity {
+public class AdvertisementEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

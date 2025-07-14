@@ -1,6 +1,5 @@
 package com.psevdo00.RestAPiICallboard.service;
 
-import com.psevdo00.RestAPiICallboard.dto.request.UserAuthorizationRequest;
 import com.psevdo00.RestAPiICallboard.dto.request.UserCreateRequest;
 import com.psevdo00.RestAPiICallboard.dto.response.UserResponse;
 import com.psevdo00.RestAPiICallboard.entity.UserEntity;
@@ -10,6 +9,11 @@ import com.psevdo00.RestAPiICallboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -20,6 +24,8 @@ import java.util.Map;
 public class UserService {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     public UserResponse create(UserCreateRequest request){
 
@@ -31,49 +37,19 @@ public class UserService {
         user.setFirstName(request.getFirstName());
         user.setFamilyName(request.getFamilyName());
         user.setMiddleName(request.getMiddleName());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setEmail(request.getEmail());
         user.setNumPhone(request.getNumPhone());
         user.setAdvts(null);
-        user.setRole(UserRoleEnum.valueOf(request.getRole()));
+        user.setRole(UserRoleEnum.USER);
 
         repository.save(user);
 
-        UserEntity newUser = repository.findByEmail(request.getEmail());
-        return convertorEntityToResponse(newUser);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    }
-
-    public UserResponse login(UserAuthorizationRequest request){
-
-        UserEntity checkUser = repository.findByEmail(request.getEmail());
-
-        Map<String, String> err = new HashMap<>();
-
-        if (checkUser != null){
-
-            if (checkUser.getPassword().equals(request.getPassword())){
-
-                return convertorEntityToResponse(checkUser);
-
-            } else {
-
-                err.put("password", "Пароль неверный!");
-
-            }
-
-        } else {
-
-            err.put("email", "Пользователя с данной почтой нет!");
-
-        }
-
-        throw new VerificationException(
-
-                HttpStatus.BAD_REQUEST,
-                err
-
-        );
+        return convertorEntityToResponse(user);
 
     }
 

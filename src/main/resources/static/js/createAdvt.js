@@ -26,6 +26,7 @@ async function createAdvt(event){
             "Content-Type": "application/json"
 
         },
+        credentials: 'include',
         body: JSON.stringify({title, info, photoBase64, cost, categoryId})
 
     });

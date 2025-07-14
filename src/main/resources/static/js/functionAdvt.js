@@ -151,6 +151,6 @@ async function openFullAdvt(id){
 
 function goToCreateAdvt(){
 
-    window.location.href = "createAdvt.html";
+    window.location.href = "create.html";
 
 }

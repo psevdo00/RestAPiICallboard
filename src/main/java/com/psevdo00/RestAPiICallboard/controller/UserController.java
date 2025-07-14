@@ -1,6 +1,5 @@
 package com.psevdo00.RestAPiICallboard.controller;
 
-import com.psevdo00.RestAPiICallboard.dto.request.UserAuthorizationRequest;
 import com.psevdo00.RestAPiICallboard.dto.response.UserResponse;
 import com.psevdo00.RestAPiICallboard.service.UserService;
 import com.psevdo00.RestAPiICallboard.dto.request.UserCreateRequest;
@@ -20,14 +19,6 @@ public class UserController {
     public ResponseEntity createUsers(@Valid @RequestBody UserCreateRequest request){
 
         UserResponse response = service.create(request);
-        return ResponseEntity.ok(response);
-
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity loginUsers(@RequestBody UserAuthorizationRequest request){
-
-        UserResponse response = service.login(request);
         return ResponseEntity.ok(response);
 
     }
