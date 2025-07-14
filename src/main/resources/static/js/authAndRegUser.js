@@ -70,18 +70,22 @@ async function auth(event){
         input.classList.remove('error');
     });
 
-    const emailValue = document.getElementById("email").value;
+    const usernameValue = document.getElementById("username").value;
     const passwordValue = document.getElementById("password").value;
 
-    const response = await fetch("api/user/login", {
+    const params = new URLSearchParams();
+    params.append('username', usernameValue);
+    params.append('password', passwordValue);
+
+    const response = await fetch("/login", {
 
         method: 'POST',
         headers: {
 
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
 
         },
-        body: JSON.stringify({email: emailValue, password: passwordValue})
+        body: params
 
     });
 

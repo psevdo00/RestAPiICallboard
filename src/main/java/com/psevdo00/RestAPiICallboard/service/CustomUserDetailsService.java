@@ -9,15 +9,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository repository;
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public CustomUserDetailsService(UserRepository repository) {
+        this.repository = repository;
+        System.out.println("✅ CustomUserDetailsService инициализирован");
+    }
 
-        UserEntity user = repository.findByEmail(email);
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        System.out.println("Загрузка пользователя по username: " + username);
+
+        UserEntity user = repository.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("Пользователь не найден!");
