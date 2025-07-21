@@ -102,7 +102,7 @@ public class UserService {
 
     }
 
-    private void validationNewUser(UserCreateRequest request){
+    public void validationNewUser(UserCreateRequest request){
 
         UserEntity userCheck = repository.findByEmail(request.getEmail());
         if (userCheck != null){
